@@ -1552,7 +1552,8 @@ function showView(v){
  if(v==='home')renderHome();if(v==='map')renderMap();if(v==='sess')renderSession();if(v==='gantt')renderGantt();if(v==='log')renderLog();
  paintMeta();
  const want=hub?(hubTab==='tpl'?'#/templates':'#/hub'):inTemplate?'#/templates':'#/'+encodeURIComponent((S&&S.meta&&S.meta.code)||'');
- if(location.hash!==want)location.hash=want;
+ if(want==='#/hub'){if(location.hash)history.replaceState(null,'',location.pathname+location.search);}
+ else if(location.hash!==want)location.hash=want;
  window.scrollTo(0,0);
 }
 
