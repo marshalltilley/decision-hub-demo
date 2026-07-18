@@ -6,27 +6,28 @@
 <title>Client Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --navy:#223342; --navy-800:#1f303e; --navy-700:#2c4254;
   --gold:#FFC000; --gold-dark:#C29C29;
-  --blue:#8DAAC5; --gray:#5E686F; --gray-light:#CBD0D2;
-  --line:#E6E9EB; --paper:#f5f6f7;
+  --blue:#8DAAC5; --gray:#575757; --gray-light:#cfcfcf;
+  --line:#e2e2e2; --paper:#f2f2f2;
   --danger:#B23A36; --danger-soft:#F6EAE9; --danger-line:#E2C6C4;
   --disp:'Barlow Semi Condensed','Bahnschrift',system-ui,sans-serif;
-  --sans:'Inter',system-ui,-apple-system,sans-serif;
+  --sans:'Source Sans 3','Inter',system-ui,-apple-system,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 html{font-size:15px}
 body{font-family:var(--sans);background:var(--paper);color:var(--navy);line-height:1.5;-webkit-font-smoothing:antialiased}
 button{font-family:inherit;cursor:pointer;border:none;background:none}
 input,textarea,select{font-family:inherit}
 h1,h2,h3{font-family:var(--disp);font-weight:700;line-height:1.1}
-:focus-visible{outline:none;box-shadow:0 0 0 1px #fff,0 0 0 3px rgba(255,192,0,.7);border-radius:4px}
+:focus-visible{outline:none;box-shadow:0 0 0 1px #fff,0 0 0 3px rgba(255,192,0,.7);border-radius:0}
 .bracket-tr{position:relative}
 .bracket-tr::after{content:"";position:absolute;top:10px;right:10px;width:18px;height:18px;
-  border-top:2px solid var(--gold);border-right:2px solid var(--gold);border-top-right-radius:4px}
+  border-top:2px solid var(--gold);border-right:2px solid var(--gold)}
 
 /* ===== Shell ===== */
 .shell{display:flex;min-height:100vh}
@@ -36,12 +37,12 @@ aside{position:relative;width:210px;flex:0 0 auto;background:var(--navy);color:#
 .snav{padding:0 12px;flex:1}
 .snav button{position:relative;display:block;width:100%;text-align:left;padding:10px 12px;margin-bottom:4px;
   font-family:var(--disp);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:13px;
-  color:rgba(255,255,255,.66);border-radius:3px;transition:color .15s,background .15s}
+  color:rgba(255,255,255,.66);border-radius:0;transition:color .15s,background .15s}
 .snav button:hover{color:#fff}
 .snav button.on{color:#fff;background:var(--navy-800)}
-.snav button.on::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold);border-radius:2px 0 0 2px}
+.snav button.on::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold);border-radius:0}
 .sfoot{padding:12px 20px 14px;border-top:1px solid var(--navy-700);font-size:11px;color:var(--blue)}
-.vswitch{display:flex;border:1px solid var(--navy-700);border-radius:3px;overflow:hidden;margin-bottom:10px}
+.vswitch{display:flex;border:1px solid var(--navy-700);border-radius:0;overflow:hidden;margin-bottom:10px}
 .vswitch button{flex:1;padding:5px 0;font-family:var(--disp);font-weight:600;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);text-align:center}
 .vswitch button:hover{color:#fff}
 .vswitch button.on{background:var(--navy-800);color:#fff;box-shadow:inset 0 -2px 0 var(--gold)}
@@ -55,13 +56,13 @@ body:not(.hub) #tab-map,body:not(.hub) #tab-gantt,body:not(.hub) #tab-log{paddin
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;
   background:#fff;border-bottom:1px solid var(--line);padding:11px 22px}
 .mast-ey{font-family:var(--disp);font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:10px;color:var(--gray)}
-.topbar h1{font-size:20px;letter-spacing:.03em;color:var(--navy);margin-top:1px}
+.topbar h1{font-size:21px;letter-spacing:.02em;color:var(--navy);margin-top:1px;text-transform:uppercase}
 .top-actions{display:flex;gap:8px;align-items:center;position:relative}
 main{flex:1;padding:22px;max-width:1100px;width:100%}
 body.editing .topbar{border-bottom:2px solid var(--gold)}
 
 /* ===== Buttons ===== */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:3px;
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:0;
   font-family:var(--disp);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:12px;
   padding:8px 16px;transition:background .15s,color .15s}
 .btn:disabled{opacity:.4;cursor:not-allowed}
@@ -78,7 +79,7 @@ body.editing .topbar{border-bottom:2px solid var(--gold)}
 .qlink{font-size:12px;color:var(--gray);text-decoration:underline;text-underline-offset:3px}
 .qlink:hover{color:var(--navy)}
 .qlink.warn{color:var(--danger)}
-.ibtn{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:3px;
+.ibtn{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:0;
   color:var(--gray);font-size:13px;border:1px solid var(--line);background:#fff}
 .ibtn:hover{color:var(--danger);background:var(--danger-soft)}
 
@@ -96,12 +97,24 @@ body.editing .topbar{border-bottom:2px solid var(--gold)}
 
 /* ===== Map ===== */
 .chips{display:flex;gap:20px;margin-bottom:18px;border-bottom:1px solid var(--line)}
-.chip{padding:7px 2px 9px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;
+.chip{padding:10px 2px 12px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;
   font-family:var(--disp);font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);transition:color .15s}
 .chip:hover{color:var(--navy)}
 .chip.on{color:var(--navy);border-bottom-color:var(--gold)}
 .chips .spacer{flex:1}
-.chip.lkt{margin-left:12px}
+.filter-wrap{position:relative;align-self:center}
+.filter-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--disp);font-weight:600;font-size:11px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--gray);background:#fff;border:1px solid var(--line);padding:7px 12px;cursor:pointer}
+.filter-btn:hover{border-color:var(--gray);color:var(--navy)}
+.filter-btn.active{color:var(--navy);border-color:var(--gray)}
+.filter-btn.active::before{content:"";width:6px;height:6px;background:var(--gold);flex:0 0 auto}
+.filter-btn .fcaret{font-size:8px;color:var(--gray)}
+.filter-menu{position:absolute;top:calc(100% + 4px);right:0;background:#fff;border:1px solid var(--line);
+  box-shadow:0 24px 60px -15px rgba(22,34,44,.35);min-width:160px;padding:5px;display:none;z-index:50}
+.filter-menu.show{display:block}
+.fm-opt{display:flex;align-items:center;gap:9px;padding:8px 10px;font-size:13px;color:var(--navy);cursor:pointer}
+.fm-opt:hover{background:rgba(34,51,66,.05)}
+.fm-opt input{width:14px;height:14px;flex:0 0 auto;accent-color:var(--gold-dark)}
 .q-in{border:none;border-bottom:1px solid var(--line);background:transparent;padding:5px 2px;font-size:12.5px;color:var(--navy);width:170px;align-self:center}
 .q-in:focus{border-bottom-color:var(--gold);outline:none;box-shadow:none}
 .q-in::placeholder{color:rgba(94,104,111,.55)}
@@ -113,7 +126,7 @@ body.editing .topbar{border-bottom:2px solid var(--gold)}
 .tier-h small{color:var(--gray);font-size:12px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:9px}
 .node-card{position:relative;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gray-light);
-  border-radius:3px;padding:12px 26px 12px 14px;text-align:left;display:flex;flex-direction:column;
+  border-radius:0;padding:12px 26px 12px 14px;text-align:left;display:flex;flex-direction:column;
   min-height:64px;transition:border-color .15s}
 .node-card:hover{border-color:var(--gray)}
 .node-card.de{border-left-color:var(--gold)}
@@ -122,6 +135,8 @@ body.editing .topbar{border-bottom:2px solid var(--gold)}
 .nc-t{font-family:var(--disp);font-weight:600;font-size:15px;line-height:1.15;color:var(--navy)}
 .node-card.lo .nc-t{color:#fff}
 .dec{font-size:12px;font-weight:600;color:var(--gold-dark);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:0;padding-top:8px}
+.nc-meta{font-size:10.5px;color:var(--gray);font-variant-numeric:tabular-nums;letter-spacing:.02em;margin-top:6px}
+.node-card.lo .nc-meta{color:var(--blue)}
 .node-card.lo .dec{color:var(--gold)}
 .node-card.tagged{padding-right:66px}
 .ctag{position:absolute;top:12px;right:11px;font-family:var(--disp);font-weight:600;font-size:9.5px;
@@ -130,7 +145,7 @@ body.editing .topbar{border-bottom:2px solid var(--gold)}
 .ctag.warn{color:var(--danger)}
 .node-card.lo .ctag.warn{color:#E8A09C}
 .add-card{display:flex;align-items:center;justify-content:center;min-height:56px;border:1.5px dashed var(--gray-light);
-  border-radius:3px;color:var(--gray);font-family:var(--disp);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:11px}
+  border-radius:0;color:var(--gray);font-family:var(--disp);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:11px}
 .add-card:hover{border-color:var(--gold-dark);color:var(--navy)}
 
 /* ===== Sub-decisions ===== */
@@ -149,13 +164,13 @@ body.editing .topbar{border-bottom:2px solid var(--gold)}
 .sub-sq.lo{background:var(--navy)}
 .sub-sq.bl{background:var(--danger)}
 .node-card.lo .sub-sq.lo{background:#fff}
-.sub-line-d{display:flex;align-items:center;gap:9px;width:100%;text-align:left;border:1px solid var(--line);border-radius:3px;padding:9px 12px;margin-top:6px;background:#fff}
+.sub-line-d{display:flex;align-items:center;gap:9px;width:100%;text-align:left;border:1px solid var(--line);border-radius:0;padding:9px 12px;margin-top:6px;background:#fff}
 .sub-line-d:hover{border-color:var(--gray)}
 .sub-line-d .sub-t{font-family:var(--disp);font-weight:600;font-size:13.5px;color:var(--navy)}
 .sub-line-d .sub-dec{font-size:12px;font-weight:600;color:var(--gold-dark);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sub-line-d .sub-st{margin-left:auto;font-family:var(--disp);font-weight:600;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);white-space:nowrap}
 /* ===== Gantt ===== */
-.gantt{position:relative;background:#fff;border:1px solid var(--line);border-radius:3px;padding:16px 18px 14px;overflow:hidden}
+.gantt{position:relative;background:#fff;border:1px solid var(--line);border-radius:0;padding:16px 18px 14px;overflow:hidden}
 .g-overlay{position:absolute;top:38px;bottom:14px;left:calc(18px + 230px);right:18px;pointer-events:none}
 .g-grid{position:absolute;top:0;bottom:0;border-left:1px solid var(--line)}
 .g-today{position:absolute;top:0;bottom:0;border-left:2px solid var(--gold)}
@@ -168,41 +183,50 @@ body.editing .topbar{border-bottom:2px solid var(--gold)}
 .g-lab.sub{padding-left:18px;font-size:11.5px;color:var(--gray)}
 .g-track{position:relative;flex:1;height:14px}
 .g-track::before{content:"";position:absolute;left:0;right:0;top:6px;height:1px;background:var(--paper)}
-.g-bar{position:absolute;top:2px;height:10px;border-radius:2px;background:var(--gray-light);cursor:pointer}
-.g-bar.de{background:var(--gold)}
-.g-bar.lo{background:var(--navy)}
-.g-bar.bl{background:var(--danger)}
-.g-bar:hover{outline:1px solid var(--gray)}
-.g-legend{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--gray);margin-top:10px}
+.g-mile{position:absolute;top:1px;width:11px;height:11px;transform:translateX(-50%) rotate(45deg);background:var(--gray-light);cursor:pointer}
+.g-mile.de{background:var(--gold)}
+.g-mile.lo{background:var(--navy)}
+.g-mile.bl{background:var(--danger)}
+.g-mile.overdue{box-shadow:0 0 0 2px var(--danger)}
+.g-mile:hover{outline:1px solid var(--gray)}
+.mv-over{color:var(--danger);font-weight:600}
+.g-legend{display:flex;align-items:center;flex-wrap:wrap;gap:5px;font-size:12px;color:var(--gray);margin-top:10px}
+.g-legend .od{color:var(--danger);font-weight:600}
 @media(max-width:840px){
  .g-lab{width:120px}
  .g-head{margin-left:120px}
  .g-overlay{left:calc(10px + 120px);right:10px}
  .gantt{padding:12px 10px}
 }
-.ctx{position:fixed;background:#fff;border:1px solid var(--line);border-radius:4px;box-shadow:0 24px 60px -15px rgba(22,34,44,.35);min-width:200px;padding:6px;display:none;z-index:80}
+.ctx{position:fixed;background:#fff;border:1px solid var(--line);border-radius:0;box-shadow:0 24px 60px -15px rgba(22,34,44,.35);min-width:200px;padding:6px;display:none;z-index:80}
 .ctx.show{display:block}
-.ctx button{display:block;width:100%;text-align:left;padding:8px 12px;border-radius:3px;font-size:13px;color:var(--navy)}
+.ctx button{display:block;width:100%;text-align:left;padding:8px 12px;border-radius:0;font-size:13px;color:var(--navy)}
 .ctx button:hover{background:rgba(34,51,66,.05)}
 
 /* ===== Scope tree ===== */
 .scope-sec{margin-bottom:30px}
-.scope-h,.scope-h-ed{display:flex;align-items:center;gap:12px;width:100%;text-align:left;margin-bottom:12px;flex-wrap:wrap;
-  border-left:4px solid var(--blue);padding:3px 0 3px 12px}
-.scope-h::after,.scope-h-ed::after{content:"";flex:1;height:1px;background:var(--line);min-width:24px}
-.scope-h h3{font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--navy)}
-.scope-h .drill{color:var(--gray-light);transition:color .15s}
+.scope-h,.scope-h-ed{display:flex;align-items:flex-end;gap:16px;width:100%;text-align:left;margin-bottom:14px;
+  position:relative;padding:2px 0 2px 14px}
+.scope-h::before,.scope-h-ed::before{content:"";position:absolute;left:0;top:2px;bottom:4px;width:3px;background:var(--gold);transition:background .15s}
+.scope-htxt{display:flex;flex-direction:column;gap:5px;flex:0 0 auto;min-width:0}
+.scope-lv{font-family:var(--disp);font-weight:600;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gray);line-height:1}
+.scope-h h3{font-size:17px;letter-spacing:.05em;text-transform:uppercase;color:var(--navy);line-height:1;font-weight:700}
+.scope-rule{flex:1;height:1px;background:var(--line);min-width:24px;margin-bottom:6px}
+.scope-meta{display:flex;align-items:center;gap:10px;flex:0 0 auto;margin-bottom:3px}
+.scope-h .drill{color:var(--gray-light);transition:color .15s;font-weight:400}
 .scope-h{transition:background .15s}
 .scope-h:hover{background:rgba(34,51,66,.04)}
 .scope-h:hover .drill{color:var(--gold-dark)}
+.scope-h:hover::before{background:var(--gold-dark)}
 .scope-h.eng{cursor:default}
 .scope-h.eng:hover{background:none}
+.scope-h.eng:hover::before{background:var(--gold)}
 .chs,.grp-children{border-left:1px solid var(--gray-light);margin:18px 0 0 8px;padding-left:20px}
-.grp-children .scope-h h3{font-size:13.5px}
+.grp-children .scope-h h3{font-size:14px}
+.grp-children .scope-lv{font-size:9px}
 .grp-children .scope-h-ed input{font-size:12px;width:190px}
-.lv{font-family:var(--disp);font-weight:600;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);flex:0 0 auto}
-.scope-h small,.scope-h-ed small{color:var(--gray);font-size:12px;white-space:nowrap}
-.scope-h-ed input{border:1px solid rgba(94,104,111,.5);border-radius:3px;padding:5px 8px;font-size:13px;color:var(--navy);font-family:var(--disp);font-weight:700;text-transform:uppercase;width:210px}
+.scope-h small,.scope-h-ed small{color:var(--gray);font-size:12px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.scope-h-ed input{border:1px solid rgba(94,104,111,.5);border-radius:0;padding:5px 8px;font-size:13px;color:var(--navy);font-family:var(--disp);font-weight:700;text-transform:uppercase;width:210px}
 .mbar{width:90px;height:4px;background:var(--line);display:flex;flex:0 0 auto}
 .mbar .seg-lo{background:var(--navy);height:100%}
 .mbar .seg-de{background:var(--gold);height:100%}
@@ -219,20 +243,20 @@ body.editing .topbar{border-bottom:2px solid var(--gold)}
 .snav button.back{font-size:10.5px;color:var(--blue);letter-spacing:.12em;padding:8px 12px 0;margin-bottom:2px}
 .snav button.back:hover{color:#fff;background:none}
 .eng-code{font-family:var(--disp);font-weight:600;font-size:13px;letter-spacing:.06em;color:var(--gray)}
-.eng-code-edit{font-family:var(--disp);font-weight:600;font-size:14px;color:var(--navy);border:1px solid rgba(94,104,111,.5);border-radius:3px;padding:6px 10px;width:150px}
+.eng-code-edit{font-family:var(--disp);font-weight:600;font-size:14px;color:var(--navy);border:1px solid rgba(94,104,111,.5);border-radius:0;padding:6px 10px;width:150px}
 .eng-row{display:flex;align-items:baseline;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .eng-row .spacer{flex:1}
 .eng-name{font-family:var(--disp);font-weight:700;font-size:30px;letter-spacing:.03em;text-transform:uppercase;color:var(--navy);text-align:left;line-height:1.1}
 .eng-name:hover{text-decoration:underline;text-underline-offset:6px;text-decoration-color:var(--gold);text-decoration-thickness:3px}
-.eng-edit{font-family:var(--disp);font-weight:700;font-size:30px;text-transform:uppercase;color:var(--navy);border:1px solid rgba(94,104,111,.5);border-radius:3px;padding:2px 10px;flex:1;min-width:280px}
+.eng-edit{font-family:var(--disp);font-weight:700;font-size:30px;text-transform:uppercase;color:var(--navy);border:1px solid rgba(94,104,111,.5);border-radius:0;padding:2px 10px;flex:1;min-width:280px}
 .eng-meta{font-size:12.5px;color:var(--gray)}
-.pick-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;width:100%;text-align:left;border:1px solid var(--line);border-radius:3px;padding:10px 12px;margin-bottom:6px;background:#fff}
+.pick-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;width:100%;text-align:left;border:1px solid var(--line);border-radius:0;padding:10px 12px;margin-bottom:6px;background:#fff}
 .pick-row:hover{border-color:var(--gold-dark)}
 .pick-row .pk-t{font-family:var(--disp);font-weight:600;font-size:14px;color:var(--navy)}
 .pick-row .pk-m{font-size:11.5px;color:var(--gray);white-space:nowrap}
 .cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
 .cmp-col h4{font-family:var(--disp);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);margin:0 0 8px}
-.cmp-field{border:1px solid var(--line);border-radius:3px;padding:8px 10px;margin-bottom:8px;font-size:12.5px}
+.cmp-field{border:1px solid var(--line);border-radius:0;padding:8px 10px;margin-bottom:8px;font-size:12.5px}
 .cmp-field.hl{background:rgba(255,192,0,.10);border-color:rgba(255,192,0,.55)}
 .cmp-field b{font-family:var(--disp);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:3px}
 @media(max-width:840px){
@@ -244,34 +268,49 @@ body.editing .topbar{border-bottom:2px solid var(--gold)}
 .detail-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:-4px 0 12px}
 .detail-bar .pos{font-size:12px;color:var(--gray);white-space:nowrap}
 .detail-bar .spacer{flex:1}
-select{padding:8px 30px 8px 10px;border:1px solid rgba(94,104,111,.7);border-radius:3px;background:#fff no-repeat right 11px center;
+select{padding:8px 30px 8px 10px;border:1px solid rgba(94,104,111,.7);border-radius:0;background:#fff no-repeat right 11px center;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236F7981'/%3E%3C/svg%3E");
   appearance:none;-webkit-appearance:none;font-size:13px;color:var(--navy);max-width:100%}
-.card{position:relative;background:#fff;border:1px solid var(--line);border-radius:3px;margin-bottom:14px}
-.card.hero-rule::before{content:"";display:block;height:3px;background:var(--gold);border-radius:3px 3px 0 0}
+.card{position:relative;background:#fff;border:1px solid var(--line);border-radius:0;margin-bottom:14px}
+.card.hero-rule::before{content:"";display:block;height:3px;background:var(--gold);border-radius:0}
 .card-b{padding:16px 18px}
 .p-title{font-size:21px;letter-spacing:.03em}
 .p-q{font-size:14px;color:var(--navy);margin-top:5px;opacity:.85}
 .dep-line{font-size:12px;color:var(--gray);margin-top:7px}
 .dep-line b{color:var(--navy);font-weight:600}
+.dep-item{white-space:nowrap}
+.dep-sq{display:inline-block;width:8px;height:8px;margin-right:6px;vertical-align:baseline;background:var(--gray-light)}
+.dep-sq.de{background:var(--gold)}
+.dep-sq.lo{background:var(--navy)}
+.dep-sq.bl{background:var(--danger)}
 .d-ey{font-family:var(--disp);font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);margin-bottom:6px}
 .ey-ns{color:var(--gray)}
 .ey-de{color:var(--gold-dark)}
 .ey-lo{color:var(--navy)}
+.meta-strip{display:flex;flex-wrap:wrap;border:1px solid var(--line);margin:16px 0 8px}
+.meta-cell{display:flex;flex-direction:column;gap:4px;padding:9px 18px 10px;border-right:1px solid var(--line)}
+.meta-cell:last-child{border-right:none}
+.meta-k{font-family:var(--disp);font-weight:600;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray)}
+.meta-v{font-size:13px;color:var(--navy);font-weight:500;white-space:nowrap;font-variant-numeric:tabular-nums}
+.mv-status{display:inline-flex;align-items:center;gap:7px}
+.mv-sq{width:9px;height:9px;flex:0 0 auto;background:var(--gray-light)}
+.mv-sq.de{background:var(--gold)}
+.mv-sq.lo{background:var(--navy)}
+.mv-sq.bl{background:var(--danger,#b3453b)}
 .opt-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:10px;margin-top:14px}
-.opt{position:relative;border:1px solid var(--line);border-radius:3px;padding:12px;display:flex;flex-direction:column;gap:7px;background:#fff}
+.opt{position:relative;border:1px solid var(--line);border-radius:0;padding:12px;display:flex;flex-direction:column;gap:7px;background:#fff}
 .opt.rec{border-color:rgba(255,192,0,.65)}
-.opt.rec::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--gold);border-radius:3px 3px 0 0}
+.opt.rec::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--gold);border-radius:0}
 .opt.chosen{border-color:var(--navy)}
 .rec-tag,.chosen-tag{position:absolute;top:-9px;font-family:var(--disp);font-weight:600;font-size:10px;
-  letter-spacing:.08em;padding:2px 7px;border-radius:4px;text-transform:uppercase}
+  letter-spacing:.08em;padding:2px 7px;border-radius:0;text-transform:uppercase}
 .rec-tag{left:10px;background:var(--gold);color:var(--navy)}
 .chosen-tag{right:10px;background:var(--navy);color:#fff}
 .opt-t{font-family:var(--disp);font-weight:600;font-size:16px}
 .opt-d{font-size:12.5px}
 .fact{font-size:12px;color:var(--gray);padding-left:9px;border-left:2px solid var(--line)}
 .fact b{color:var(--navy);font-weight:600}
-.callout{border-left:3px solid var(--gold);background:var(--navy);color:#fff;border-radius:3px;
+.callout{border-left:3px solid var(--gold);background:var(--navy);color:#fff;border-radius:0;
   padding:10px 13px;font-size:12.5px;margin-top:14px;line-height:1.5}
 .callout b{font-family:var(--disp);letter-spacing:.03em}
 
@@ -282,26 +321,26 @@ select{padding:8px 30px 8px 10px;border:1px solid rgba(94,104,111,.7);border-rad
 select.dwho{width:150px;flex:0 0 auto}
 .mem-name{font-weight:600;font-size:13px}
 .mem-org{font-size:11px;color:var(--gray)}
-textarea,.ti{width:100%;border:1px solid rgba(94,104,111,.7);border-radius:3px;padding:9px 10px;
+textarea,.ti{width:100%;border:1px solid rgba(94,104,111,.7);border-radius:0;padding:9px 10px;
   font-size:13px;color:var(--navy);background:#fff}
 textarea{min-height:56px;margin-top:10px;resize:vertical}
 textarea::placeholder,.ti::placeholder{color:rgba(94,104,111,.7)}
 .act-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
 .act-row .spacer{flex:1}
 .outcome-box{border:1px solid rgba(255,192,0,.5);border-left:3px solid var(--gold);background:rgba(255,192,0,.06);
-  border-radius:3px;padding:11px 13px;margin-top:14px;font-size:13px}
+  border-radius:0;padding:11px 13px;margin-top:14px;font-size:13px}
 .outcome-box.locked{background:var(--navy);border-color:var(--navy);color:#fff}
 .outcome-box.locked b{color:var(--gold)}
-.note{border-left:3px solid var(--danger);background:var(--danger-soft);border-radius:0 3px 3px 0;
+.note{border-left:3px solid var(--danger);background:var(--danger-soft);border-radius:0;
   padding:8px 12px;margin-top:10px;font-size:12px;color:var(--danger)}
 
 /* Editor */
 .ef-lab{display:block;font-size:12px;font-weight:500;color:var(--gray);margin:12px 0 4px}
 .ef-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .dep-checks{display:flex;flex-wrap:wrap;gap:6px}
-.dep-checks label{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:3px;
+.dep-checks label{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:0;
   padding:5px 9px;font-size:12px;background:#fff;cursor:pointer}
-.opt-ed{border:1px solid var(--line);border-radius:3px;padding:12px;margin-top:10px}
+.opt-ed{border:1px solid var(--line);border-radius:0;padding:12px;margin-top:10px}
 .opt-ed-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .opt-ed-h span{font-family:var(--disp);font-weight:600;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray)}
 .fact-row{display:flex;gap:6px;margin-top:6px;align-items:center}
@@ -310,7 +349,7 @@ textarea::placeholder,.ti::placeholder{color:rgba(94,104,111,.7)}
 .ef-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
 
 /* ===== Log ===== */
-.log-item{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:3px;padding:13px 15px;margin-bottom:10px}
+.log-item{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:0;padding:13px 15px;margin-bottom:10px}
 .log-item.lo{border-left-color:var(--navy)}
 .log-h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
 .log-t{font-family:var(--disp);font-weight:700;font-size:16px}
@@ -323,6 +362,10 @@ textarea::placeholder,.ti::placeholder{color:rgba(94,104,111,.7)}
 .empty{color:var(--gray);font-size:13.5px;padding:36px 10px;text-align:center}
 .chg-item{display:flex;gap:10px;padding:7px 4px;border-bottom:1px solid var(--line);font-size:12.5px;align-items:baseline;flex-wrap:wrap}
 .chg-item:last-child{border-bottom:none}
+.chg-item.ed{flex-wrap:nowrap;align-items:center}
+.chg-item.ed input{flex:1;min-width:0}
+.chg-item.ed .chg-node{overflow:hidden;text-overflow:ellipsis;max-width:170px}
+.log-edit-row{display:flex;justify-content:flex-end;margin-top:6px}
 .chg-date{color:var(--gray);font-size:11px;white-space:nowrap}
 .chg-node{font-family:var(--disp);font-weight:600;white-space:nowrap}
 details.chg summary{cursor:pointer;font-family:var(--disp);font-weight:600;font-size:13px;letter-spacing:.06em;
@@ -331,20 +374,23 @@ details.chg summary{cursor:pointer;font-family:var(--disp);font-weight:600;font-
 /* ===== Modals / toast ===== */
 .modal-bg{position:fixed;inset:0;background:rgba(22,34,44,.55);display:none;align-items:flex-start;justify-content:center;z-index:60;padding:24px 14px;overflow-y:auto}
 .modal-bg.show{display:flex}
-.modal{background:#fff;border-radius:4px;max-width:620px;width:100%;padding:20px;margin-top:20px;box-shadow:0 24px 60px -15px rgba(22,34,44,.35);
+.modal{background:#fff;border-radius:0;max-width:620px;width:100%;padding:20px;margin-top:20px;box-shadow:0 24px 60px -15px rgba(22,34,44,.35);
   display:flex;flex-direction:column;max-height:calc(100vh - 88px)}
 .modal>*{flex:0 0 auto}
 .modal .m-scroll{flex:0 1 auto;overflow-y:auto;min-height:0}
 .modal h3{font-size:16px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
 .modal p{font-size:12.5px;color:var(--gray);margin-bottom:10px}
 .modal textarea{min-height:170px;font-family:ui-monospace,Menlo,monospace;font-size:12px;margin-top:0}
+.ui-dialog{max-width:440px}
+.ui-dialog #uiMsg{font-size:13.5px;color:var(--navy);margin-bottom:14px;line-height:1.5}
+.ui-dialog #uiInput{min-height:96px;font-family:var(--sans);font-size:13.5px;margin:0 0 4px}
 .mem-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
-.mem-row input[type=text]{flex:1;min-width:110px;padding:8px 10px;border:1px solid rgba(94,104,111,.7);border-radius:3px;font-size:13px}
+.mem-row input[type=text]{flex:1;min-width:110px;padding:8px 10px;border:1px solid rgba(94,104,111,.7);border-radius:0;font-size:13px}
 .mem-head{margin:6px 0 2px}
 .mem-head span{flex:1;min-width:110px;font-size:11px;font-weight:500;color:var(--gray)}
 .mem-head .mem-sp{flex:0 0 26px;min-width:26px}
 .toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#fff;border-left:3px solid var(--gold);
-  padding:10px 16px;border-radius:3px;font-size:13px;z-index:70;opacity:0;transition:opacity .25s;pointer-events:none;
+  padding:10px 16px;border-radius:0;font-size:13px;z-index:70;opacity:0;transition:opacity .25s;pointer-events:none;
   max-width:min(420px,90vw);box-shadow:0 24px 60px -15px rgba(22,34,44,.35)}
 .toast.show{opacity:1}
 @media(max-width:840px){
@@ -354,7 +400,7 @@ details.chg summary{cursor:pointer;font-family:var(--disp);font-weight:600;font-
   .brand-t{font-size:17px}
   .snav{display:flex;padding:0 8px;overflow-x:auto}
   .snav button{white-space:nowrap;margin:7px 2px}
-  .snav button.on::before{left:0;right:0;top:auto;bottom:0;width:auto;height:3px;border-radius:2px 2px 0 0}
+  .snav button.on::before{left:0;right:0;top:auto;bottom:0;width:auto;height:3px;border-radius:0}
   .sfoot{border-top:none;padding:6px 16px 10px;flex-basis:100%}
   .topbar{padding:9px 12px}
   .topbar h1{font-size:17px}
@@ -375,7 +421,7 @@ details.chg summary{cursor:pointer;font-family:var(--disp);font-weight:600;font-
     <button class="back" id="backBtn" onclick="goBack()">‹ Admin Portal</button>
     <button id="tab-dh" onclick="dhNav()">Decision Hub</button>
     <button id="tab-map" onclick="showView('map')">Decision Map</button>
-    <button id="tab-gantt" onclick="showView('gantt')">Gantt Chart</button>
+    <button id="tab-gantt" onclick="showView('gantt')">Milestones</button>
     <button id="tab-log" onclick="showView('log')">Decision Log</button>
   </nav>
   <div class="sfoot">
@@ -395,7 +441,7 @@ details.chg summary{cursor:pointer;font-family:var(--disp);font-weight:600;font-
       <h1 id="mastTitle"></h1>
     </div>
     <div class="top-actions">
-      <input class="q-in" id="qTop" type="search" placeholder="Search" oninput="setQ(qKey(),this)">
+      <input class="q-in" id="qTop" type="search" placeholder="Search" aria-label="Search this screen" oninput="setQ(qKey(),this)">
       <button class="btn ghost sm" id="editBtn" onclick="toggleEdit()">Edit</button>
       <button class="btn secondary sm" id="exportBtn" onclick="exportJson()">Export Data</button>
     </div>
@@ -478,6 +524,19 @@ details.chg summary{cursor:pointer;font-family:var(--disp);font-weight:600;font-
   </div>
 </div>
 
+<div class="modal-bg" id="uiModal">
+  <div class="modal ui-dialog" role="dialog" aria-modal="true" aria-labelledby="uiTitle">
+    <h3 id="uiTitle"></h3>
+    <p id="uiMsg"></p>
+    <textarea id="uiInput" style="display:none" spellcheck="true"></textarea>
+    <div class="act-row">
+      <span class="spacer"></span>
+      <button class="btn ghost" id="uiCancel">Cancel</button>
+      <button class="btn primary" id="uiOk">Confirm</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -485,7 +544,7 @@ details.chg summary{cursor:pointer;font-family:var(--disp);font-weight:600;font-
 const STORE_KEY='li-decision-hub-v3';
 const TEMPLATE_TYPES=['FIA','MYGA','RILA','SPIA','VA','IUL','UL','VUL','WL','Term','Hybrid','Other'];
 const RESERVED_CODES=['hub','templates'];
-let dirty=false,saveTimer=null,editMode=false,currentNode=null,currentView='home',currentGroup=null,hideLocked=false,renamingId=null,pendingAdd=null,pendingLib=null,inTemplate=false,hubTab='eng',addFilter='all',viewRole='admin',settingsOpen=false;
+let dirty=false,saveTimer=null,editMode=false,currentNode=null,currentView='home',currentGroup=null,hideStatus=new Set(),filterOpen=false,renamingId=null,pendingAdd=null,pendingLib=null,inTemplate=false,hubTab='eng',addFilter='all',viewRole='admin',settingsOpen=false,logEdit=false;
 
 function nd(id,tier,title,question,options,rec,rationale,status,outcome,deps){
  return {id,tier,title,question,options,liRec:rec,liRationale:rationale||'',
@@ -520,9 +579,9 @@ function defaultState(){
   {id:'m5',name:'Life Innovators',org:'LI — Facilitator'}
  ];
  const T=[
-  {n:1,t:'Tier 1 — Structural',s:'Gate decisions: chassis, market, income story, banding'},
-  {n:2,t:'Tier 2 — Design',s:'Crediting, surrender, riders — priced between sessions'},
-  {n:3,t:'Tier 3 — Calibration',s:'Ages, provisions, governance'}
+  {n:1,t:'Tier 1'},
+  {n:2,t:'Tier 2'},
+  {n:3,t:'Tier 3'}
  ];
  const G=govNode();
  G.status='lo';
@@ -534,12 +593,12 @@ function defaultState(){
    o('b','RILA','Buffered downside; higher upside potential.','Higher option budget; capital relief','Registered product — SEC path, +6–9 mo','Fastest-growing segment'),
    o('c','MYGA','Guaranteed rate; simplest build.','Spread-driven; rate-sensitive sales','Fastest to market','Commodity pricing pressure')],
    'a','FIA aligns with client distribution strengths and existing hedging infrastructure; RILA registration timeline conflicts with launch window.',
-   'lo',{optionId:'a',dissents:[],rationale:'Full alignment. RILA revisit in 2027 planning.',date:'2026-06-16'},['n0']),
+   'lo',{optionId:'a',dissents:[],rationale:'Full alignment. RILA revisit in 2027 planning.',date:'2026-06-16'},[]),
  nd('n2',1,'Target market & distribution','Primary distribution channel and buyer profile.',[
    o('a','IMO / independent agents','Broad reach; commission-driven shelf.','Comp load 6–7% st.; persistency risk','Standard appointment infra','Dominant FIA channel'),
    o('b','Bank / broker-dealer','Fee-sensitive; simpler designs win.','Lower comp; lower caps tolerated','Suitability platform reviews','Growing share, slower ramp')],
    'a','Client field force is IMO-centric; features below should optimize for IMO shelf competitiveness.',
-   'lo',{optionId:'a',dissents:[{who:'D. Ops',note:'Prefers bank-channel simplicity; concerns routed to admin requirements.'}],rationale:'IMO reach outweighs ops complexity.',date:'2026-06-16'},['n0']),
+   'lo',{optionId:'a',dissents:[{who:'D. Ops',note:'Prefers bank-channel simplicity; concerns routed to admin requirements.'}],rationale:'IMO reach outweighs ops complexity.',date:'2026-06-16'},[]),
  nd('n13',1,'Product name','Marketed name for the income-led product.',[
    {id:'a',label:'Generic Income Advantage',desc:'Income-forward; leads with the GLWB story.',facts:[
     {k:'Trademark',v:'Clearance search clean; filing in progress'},
@@ -626,13 +685,13 @@ function defaultState(){
  ['n16','n17'].forEach(id=>{N.find(n=>n.id===id).parentId='n3';});
  const SC={n0:'eng',n2:'eng',n11:'eng',n3:'pr:p1',n8:'pr:p1',n9:'pr:p1',n13:'pr:p1',n14:'pr:p2',n15:'pr:p2',n16:'pr:p1',n17:'pr:p1'};
  N.forEach(n=>{const sc=(SC[n.id]||'ch:c1').split(':');n.scopeLevel=sc[0];n.scopeId=sc[1]||null;});
- const DATES={n0:['2026-06-01','2026-06-16'],n1:['2026-06-01','2026-06-16'],n2:['2026-06-01','2026-06-16'],
-  n13:['2026-06-20','2026-06-30'],n3:['2026-06-20','2026-06-30'],n16:['2026-06-24','2026-06-30'],n17:['2026-07-10','2026-07-24'],
-  n14:['2026-07-01','2026-07-15'],n15:['2026-06-20','2026-06-30'],
-  n4:['2026-07-08','2026-07-22'],n5:['2026-07-08','2026-07-22'],n6:['2026-07-15','2026-07-29'],n7:['2026-07-15','2026-07-29'],
-  n8:['2026-07-22','2026-08-05'],n9:['2026-07-27','2026-08-10'],n10:['2026-08-03','2026-08-17'],n11:['2026-08-05','2026-08-19'],n12:['2026-08-10','2026-08-24']};
- N.forEach(n=>{const d=DATES[n.id];if(d){n.start=d[0];n.end=d[1];}});
- return {meta:{engagement:'[DEMO] Generic Life',code:'Generic-Life',updated:new Date().toISOString()},
+ const DUE={n0:'2026-06-16',n1:'2026-06-16',n2:'2026-06-16',
+  n13:'2026-06-30',n3:'2026-06-30',n16:'2026-06-30',n17:'2026-07-24',
+  n14:'2026-07-15',n15:'2026-06-30',
+  n4:'2026-07-22',n5:'2026-07-22',n6:'2026-07-29',n7:'2026-07-29',
+  n8:'2026-08-05',n9:'2026-08-10',n10:'2026-08-17',n11:'2026-08-19',n12:'2026-08-24'};
+ N.forEach(n=>{if(DUE[n.id])n.due=DUE[n.id];});
+ return {meta:{engagement:'Generic Life',code:'Generic-Life',updated:new Date().toISOString()},
    levelNames:{eng:'Program',ch:'Chassis',pr:'Product'},
    chassis:[{id:'c1',name:'Fixed Indexed Annuity'}],
    products:[{id:'p1',name:'Generic Income Advantage',chassisId:'c1'},{id:'p2',name:'Generic SecureGrowth',chassisId:'c1'}],
@@ -640,12 +699,20 @@ function defaultState(){
 }
 
 function migrate(s){
- const DEFT={1:'Gate decisions: chassis, market, income story, banding',2:'Crediting, surrender, riders — priced between sessions',3:'Ages, provisions, governance'};
- if(!s.tiers)s.tiers=[{n:1,t:'Tier 1 — Structural'},{n:2,t:'Tier 2 — Design'},{n:3,t:'Tier 3 — Calibration'}];
- s.tiers.forEach(t=>{if(t.s===undefined)t.s=DEFT[t.n]||'';});
+ if(!s.tiers)s.tiers=[{n:1,t:'Tier 1'},{n:2,t:'Tier 2'},{n:3,t:'Tier 3'}];
+ // drop the old description field entirely, and strip the "Tier N — Word" over-explanation from the seeded defaults (leaves custom names alone)
+ s.tiers.forEach(t=>{delete t.s;if(/^Tier \d+ — (Structural|Design|Calibration)$/.test(t.t))t.t=t.t.replace(/ — .*/,'');});
  if(!s.changes)s.changes=[];
+ if(s.meta&&typeof s.meta.engagement==='string')s.meta.engagement=s.meta.engagement.replace(/^\[DEMO\]\s*/i,'');  // legacy demo name → "Generic Life"
  if(!s.nodes)s.nodes=[];
  if(!s.nodes.some(n=>n.gov))s.nodes.unshift(govNode());
+ const govIds=s.nodes.filter(n=>n.gov).map(n=>n.id);
+ s.nodes.forEach(n=>{if(Array.isArray(n.dependsOn))n.dependsOn=n.dependsOn.filter(d=>!govIds.includes(d));});
+ s.nodes.forEach(n=>{
+  if(n.due===undefined&&(n.start||n.end))n.due=n.end||n.start;  // legacy start/end range → single deadline (the end)
+  delete n.start;delete n.end;
+ });
+ if(s.meta&&s.meta.template)s.nodes.forEach(n=>{delete n.due;});  // templates never carry deadlines
  s.nodes.forEach(n=>{
   if(n.tier===1&&(n.id==='n3'&&n.title==='GLWB rider — include?'||n.id==='n4'&&n.title==='Premium banding'))n.tier=2;
  });
@@ -775,7 +842,6 @@ function buildPDTemplate(){
    {k:'Pricing',v:'Protects small-case economics'},{k:'Market',v:'Common on agency shelves'}]}
  ],'a','MYGA sales are won on the rate board; a clean headline rate outsells banded complexity.','ns',null,[]);
  myga.scopeLevel='ch';myga.scopeId='tc-MYGA';
- myga.start='2026-07-08';myga.end='2026-07-22';
  nodes.push(myga);
  return {meta:{engagement:'Product Development Template',template:true,updated:new Date().toISOString()},
   levelNames:{eng:'Program',ch:'Chassis',pr:'Product'},
@@ -819,7 +885,7 @@ function openEngagement(id){
  if(!e){showView('home');return;}
  inTemplate=false;
  DB.activeId=id;S=e.data;
- currentNode=null;currentGroup=null;mapFilter='all';hideLocked=false;settingsOpen=false;
+ currentNode=null;currentGroup=null;mapFilter='all';hideStatus.clear();settingsOpen=false;
  Q.map='';Q.gantt='';Q.log='';
  currentView='map';
  renderAll();dirtyPersist();
@@ -827,7 +893,7 @@ function openEngagement(id){
 function openTemplate(id){
  const t=DB.templates.find(x=>x.id===id)||DB.templates[0];
  S=t.data;
- currentNode=null;currentGroup=null;mapFilter='all';hideLocked=false;settingsOpen=false;
+ currentNode=null;currentGroup=null;mapFilter='all';hideStatus.clear();settingsOpen=false;
  Q.map='';Q.gantt='';Q.log='';
  currentView='map';
  inTemplate=true;
@@ -870,7 +936,7 @@ function scopeVisible(){
  const sub=subtreeNodes(currentGroup);
  return mapFilter==='today'?sub.filter(n=>n.agenda):sub;
 }
-function applyHide(list){return hideLocked?list.filter(n=>n.status!=='lo'):list;}
+function applyHide(list){return hideStatus.size?list.filter(n=>!hideStatus.has(n.status)):list;}
 
 /* ============ AMENDMENT TRAIL ============ */
 function nodeHasVotes(n){return !!(n.outcome||n.status==='de');}
@@ -914,6 +980,7 @@ function markDirty(){if(S&&S.meta)S.meta.updated=new Date().toISOString();dirtyP
 function setSaveMsg(m,d){document.getElementById('saveMsg').textContent=m;
  document.getElementById('saveDot').className='save-dot'+(d?'':' clean');}
 function fmtD(s){if(!s)return '';const d=new Date(s+'T00:00:00');return d.toLocaleDateString([],{month:'short',day:'numeric'});}
+function isOverdue(s){if(!s)return false;return new Date(s+'T23:59:59').getTime()<Date.now();}
 function fmtWhen(iso){
  if(!iso)return '';
  const d=new Date(iso);
@@ -961,12 +1028,12 @@ function renderParList(){
   `<button class="pick-row" onclick="makeSub('${childId}','${p.id}')"><span class="pk-t">${esc(p.title)}</span><span class="pk-m">${esc(scopeLabelOf(p))}${p.status==='lo'?' · Locked':''}</span></button>`).join('')
   :'<div class="empty" style="padding:14px 0">No eligible parent decisions.</div>';
 }
-function makeSub(childId,parentId){
+async function makeSub(childId,parentId){
  closeModal('parModal');
  const c=byId(childId),p=byId(parentId);
  if(guardLocked(c))return;
  if(p.status==='lo'&&c.status!=='lo'){
-  if(!confirm('"'+p.title+'" is decided (locked). Attaching an open sub-decision will reopen it to Proposed. Continue?'))return;
+  if(!await uiConfirm('"'+p.title+'" is decided (locked). Attaching an open sub-decision will reopen it to Proposed.',{title:'Reopen parent decision?',okLabel:'Continue'}))return;
   p.status='de';p.amended=true;
   S.changes.push({date:new Date().toISOString().slice(0,16).replace('T',' '),nodeId:p.id,nodeTitle:p.title,desc:'Unlocked — open sub-decision "'+c.title+'" attached'});
  }
@@ -991,6 +1058,7 @@ function promoteSub(id){
 /* ============ VIEW SWITCH (admin / editor / viewer) ============ */
 function dhNav(){showView(currentView==='home'?'home':'map');}
 function setViewRole(r){
+ logEdit=false;
  if(r!=='admin'){
   const e=DB.engagements.find(x=>x.data.meta.code==='Generic-Life')||DB.engagements[0];
   if(!e){toast('No client engagement to show.');return;}
@@ -1027,10 +1095,10 @@ function addTier(){
  const n=Math.max(0,...S.tiers.map(t=>t.n))+1;
  S.tiers.push({n,t:'Tier '+n});markDirty();renderMap();
 }
-function delTier(tn){
+async function delTier(tn){
  if(S.nodes.some(n=>n.tier===tn)){toast('Move or delete this tier\u2019s decisions first.');return;}
  const tt=S.tiers.find(x=>x.n===tn);
- if(!confirm('Delete tier "'+(tt?tt.t:tn)+'"?'))return;
+ if(!await uiConfirm('Delete tier "'+(tt?tt.t:tn)+'"?',{title:'Delete tier',okLabel:'Delete',danger:true}))return;
  S.tiers=S.tiers.filter(t=>t.n!==tn);markDirty();renderMap();
 }
 function addNode(tn,gid){
@@ -1071,12 +1139,12 @@ function dupNode(id){
  });
  markDirty();currentNode=c.id;renderSession();toast('Duplicated.');
 }
-function delNode(id){
+async function delNode(id){
  const n=byId(id);
  if(n.gov){toast('This record anchors the engagement — it can\u2019t be deleted.');return;}
  if(guardLocked(n))return;
  const kids=childrenOf(id);
- if(!confirm('Delete "'+n.title+'"'+(kids.length?' and its '+kids.length+' sub-decision'+(kids.length>1?'s':''):'')+'?'))return;
+ if(!await uiConfirm('Delete "'+n.title+'"'+(kids.length?' and its '+kids.length+' sub-decision'+(kids.length>1?'s':''):'')+'?',{title:'Delete decision',okLabel:'Delete',danger:true}))return;
  [n].concat(kids).forEach(x=>{
   if(nodeHasVotes(x))S.changes.push({date:new Date().toISOString().slice(0,16).replace('T',' '),
     nodeId:x.id,nodeTitle:x.title,desc:'Decision DELETED after voting'});
@@ -1118,12 +1186,12 @@ function addOption(id){
  n.options.push({id:uid('o'),label:'Option '+String.fromCharCode(65+n.options.length),desc:'',facts:[]});
  logChange(n,'Option added');markDirty();renderSession();
 }
-function delOption(id,oid){
+async function delOption(id,oid){
  const n=byId(id);if(guardLocked(n))return;
  if(n.options.length<=2){toast('Keep at least two options.');return;}
  if(n.outcome&&n.outcome.optionId===oid){toast('This option is the recorded decision — re-decide first.');return;}
  const op=n.options.find(x=>x.id===oid);
- if(!confirm('Remove option "'+op.label+'"?'))return;
+ if(!await uiConfirm('Remove option "'+op.label+'"?',{title:'Remove option',okLabel:'Remove',danger:true}))return;
  n.options=n.options.filter(x=>x.id!==oid);
  if(n.liRec===oid)n.liRec='';
  if(n._proposed===oid)n._proposed=null;
@@ -1150,9 +1218,9 @@ function addFact(id,oid){
  n.options.find(x=>x.id===oid).facts.push({k:'Detail',v:''});
  markDirty();renderSession();
 }
-function delFact(id,oid,fi){
+async function delFact(id,oid,fi){
  const n=byId(id);if(guardLocked(n))return;
- if(!confirm('Remove this detail row?'))return;
+ if(!await uiConfirm('Remove this detail row?',{title:'Remove detail',okLabel:'Remove',danger:true}))return;
  n.options.find(x=>x.id===oid).facts.splice(fi,1);
  logChange(n,'Option detail removed');markDirty();renderSession();
 }
@@ -1201,11 +1269,11 @@ function addChildGroup(pid){
  markDirty();renderMap();
 }
 function edGroup(id,el){const g=grpById(id);if(g){g.name=el.value;markDirty();paintMeta();}}
-function delGroup(id){
+async function delGroup(id){
  const g=grpById(id);if(!g)return;
  if(grpChildren(id).length){toast('Delete or move its sub-groups first.');return;}
  if(nodesAt(id).length){toast('Move or delete its decisions first.');return;}
- if(!confirm('Delete '+levName(grpDepth(g)).toLowerCase()+' "'+g.name+'"?'))return;
+ if(!await uiConfirm('Delete '+levName(grpDepth(g)).toLowerCase()+' "'+g.name+'"?',{title:'Delete '+levName(grpDepth(g)).toLowerCase(),okLabel:'Delete',danger:true}))return;
  S.groups=S.groups.filter(x=>x.id!==id);
  if(currentGroup===id)currentGroup=g.parentId||null;
  markDirty();paintMeta();renderMap();
@@ -1238,7 +1306,7 @@ function createEngagement(tplId){
  const data={meta:{engagement:name,code,templateId:tpl?tpl.id:DB.templates[0].id,updated:new Date().toISOString()},
    levelNames:tpl?JSON.parse(JSON.stringify(tpl.data.levelNames||['Program','Chassis','Product'])):['Program','Category','Item'],
    groups:[],
-   tiers:tpl?JSON.parse(JSON.stringify(tpl.data.tiers)):[{n:1,t:'Tier 1 — Structural'},{n:2,t:'Tier 2 — Design'},{n:3,t:'Tier 3 — Calibration'}],
+   tiers:tpl?JSON.parse(JSON.stringify(tpl.data.tiers)):[{n:1,t:'Tier 1'},{n:2,t:'Tier 2'},{n:3,t:'Tier 3'}],
    members:[{id:'m1',name:'Client lead',org:'Client — Product'},{id:'m2',name:'Life Innovators',org:'LI — Facilitator'}],
    nodes:[govNode()],changes:[]};
  if(tpl)tpl.data.nodes.filter(n=>!n.gov&&!n.parentId&&!n.groupId).forEach(src=>{
@@ -1324,15 +1392,15 @@ function addUser(){
  DB.users.push({id:uid('u'),name:'New user',role:'viewer',code:DB.engagements.length?DB.engagements[0].data.meta.code:''});
  dirtyPersist();renderHome();
 }
-function delUser(id){
+async function delUser(id){
  const u=DB.users.find(x=>x.id===id);
- if(!confirm('Remove user "'+u.name+'"?'))return;
+ if(!await uiConfirm('Remove user "'+u.name+'"?',{title:'Remove user',okLabel:'Remove',danger:true}))return;
  DB.users=DB.users.filter(x=>x.id!==id);
  dirtyPersist();renderHome();
 }
-function delEngagement(id){
+async function delEngagement(id){
  const e=DB.engagements.find(x=>x.id===id);
- if(!confirm('Delete "'+e.data.meta.engagement+'"? This cannot be undone.'))return;
+ if(!await uiConfirm('Delete "'+e.data.meta.engagement+'"? This cannot be undone.',{title:'Delete engagement',okLabel:'Delete',danger:true}))return;
  DB.engagements=DB.engagements.filter(x=>x.id!==id);
  if(DB.activeId===id){
   DB.activeId=DB.engagements.length?DB.engagements[0].id:null;
@@ -1394,7 +1462,7 @@ function saveToTemplate(id){
   gid=tg?tg.id:null;
  }
  const copies=cloneCardTree(n,S.nodes);
- copies.forEach(c=>{c.groupId=gid;});
+ copies.forEach(c=>{c.groupId=gid;delete c.due;});  // templates are authoring-only — no deadlines
  const cand=copies[0];
  const ex=tpl.nodes.find(x=>!x.gov&&!x.parentId&&(x.groupId||null)===gid&&x.title.trim().toLowerCase()===n.title.trim().toLowerCase());
  if(ex){
@@ -1492,6 +1560,60 @@ function pickFromTemplate(nid){
 }
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 
+/* ---- branded confirm / prompt (replaces native dialogs) ---- */
+let uiResolver=null;
+function uiClose(val){
+ document.getElementById('uiModal').classList.remove('show');
+ const r=uiResolver;uiResolver=null;
+ if(r)r(val);
+}
+function uiConfirm(msg,opts){
+ opts=opts||{};
+ return new Promise(res=>{
+  uiResolver=res;
+  document.getElementById('uiTitle').textContent=opts.title||'Please confirm';
+  const m=document.getElementById('uiMsg');m.textContent=msg;m.style.display='';
+  document.getElementById('uiInput').style.display='none';
+  const ok=document.getElementById('uiOk');
+  ok.textContent=opts.okLabel||'Confirm';
+  ok.className='btn '+(opts.danger?'danger':'primary');
+  document.getElementById('uiCancel').textContent=opts.cancelLabel||'Cancel';
+  document.getElementById('uiModal').classList.add('show');
+  ok.onclick=()=>uiClose(true);
+  document.getElementById('uiCancel').onclick=()=>uiClose(false);
+  setTimeout(()=>ok.focus(),30);
+ });
+}
+function uiPrompt(msg,opts){
+ opts=opts||{};
+ return new Promise(res=>{
+  uiResolver=res;
+  document.getElementById('uiTitle').textContent=opts.title||'Add a note';
+  const m=document.getElementById('uiMsg');m.textContent=msg||'';m.style.display=msg?'':'none';
+  const inp=document.getElementById('uiInput');
+  inp.style.display='';inp.value=opts.value||'';inp.placeholder=opts.placeholder||'';
+  const ok=document.getElementById('uiOk');
+  ok.textContent=opts.okLabel||'Save';ok.className='btn primary';
+  document.getElementById('uiCancel').textContent='Cancel';
+  document.getElementById('uiModal').classList.add('show');
+  ok.onclick=()=>uiClose(inp.value);
+  document.getElementById('uiCancel').onclick=()=>uiClose(null);
+  setTimeout(()=>{inp.focus();inp.select();},30);
+ });
+}
+document.addEventListener('keydown',e=>{
+ if(!document.getElementById('uiModal').classList.contains('show'))return;
+ if(e.key==='Escape'){e.preventDefault();document.getElementById('uiCancel').click();}
+ else if(e.key==='Enter'&&(document.getElementById('uiInput').style.display==='none'||(e.ctrlKey||e.metaKey))){e.preventDefault();document.getElementById('uiOk').click();}
+});
+document.getElementById('uiModal').addEventListener('click',e=>{if(e.target.id==='uiModal')document.getElementById('uiCancel').click();});
+/* keyboard activation for custom role=button elements (spans/divs, not native buttons) */
+document.addEventListener('keydown',e=>{
+ if(e.key!=='Enter'&&e.key!==' ')return;
+ const t=e.target;
+ if(t&&t.getAttribute&&t.getAttribute('role')==='button'&&t.tagName!=='BUTTON'){e.preventDefault();t.click();}
+});
+
 /* ============ VIEWS ============ */
 /* Display labels layer over stable internal codes (the codes name the governance
    mechanism, not the label): ns=not started, de=consensus recorded (revisable),
@@ -1512,17 +1634,31 @@ function visibleNodes(){
  return applyHide(nodesAt(currentGroup));
 }
 
-function toggleLocked(){
- hideLocked=!hideLocked;
+function reRenderFiltered(){
  if(currentView==='sess'){
   const list=visibleNodes();
   if(list.length&&!list.find(x=>x.id===currentNode))currentNode=list[0].id;
   renderSession();
  }else renderMap();
 }
+function toggleHide(st){
+ if(hideStatus.has(st))hideStatus.delete(st);else hideStatus.add(st);
+ reRenderFiltered();
+}
+function toggleFilterMenu(e){e.stopPropagation();filterOpen=!filterOpen;reRenderFiltered();}
+document.addEventListener('click',e=>{if(filterOpen&&e.target&&!e.target.closest('.filter-wrap')){filterOpen=false;if(currentView==='map'||currentView==='sess')reRenderFiltered();}});
 function goBack(){
  hubTab=inTemplate?'tpl':'eng';
  showView('home');
+}
+function refreshTopActions(){
+ const hub=(currentView==='home');
+ const hasReal=!!(S&&S.nodes&&S.nodes.some(n=>!n.gov));  // real decisions beyond the always-present governance card
+ const eb=document.getElementById('editBtn'),xb=document.getElementById('exportBtn');
+ // Editors can now edit; admins can always edit (to build an empty engagement); viewers never. The log has its own admin-only editing.
+ eb.style.display=(hub||currentView==='log'||viewRole==='viewer'||!(hasReal||viewRole==='admin'))?'none':'';
+ // Export is available to every role — including viewers — but only when there's decision data to export.
+ xb.style.display=(hub||!hasReal)?'none':'';
 }
 function showView(v){
  if(v!=='home'&&!S)v='home';
@@ -1544,8 +1680,7 @@ function showView(v){
  document.getElementById('tab-map').classList.toggle('on',v==='map'||v==='sess');
  document.getElementById('tab-gantt').classList.toggle('on',v==='gantt');
  document.getElementById('tab-log').classList.toggle('on',v==='log');
- document.getElementById('editBtn').style.display=(hub||viewRole!=='admin')?'none':'';
- document.getElementById('exportBtn').style.display=(hub||viewRole==='viewer')?'none':'';
+ refreshTopActions();
  const qi=document.getElementById('qTop');
  qi.style.display=(v==='sess')?'none':'';
  if(qi.value!==(Q[qKey()]||''))qi.value=Q[qKey()]||'';
@@ -1567,14 +1702,20 @@ function progressLine(scoped){
  </div>`;
 }
 
-function headerHtml(){
+function headerHtml(opts){
+ opts=opts||{};
  if(inTemplate)return '';
  const agendaCount=subtreeNodes(currentGroup).filter(n=>n.agenda).length;
- return progressLine(true)+`<div class="chips">
-   <button class="chip ${mapFilter==='all'?'on':''}" onclick="setFilter('all')">All decisions</button>
-   <button class="chip ${mapFilter==='today'?'on':''}" onclick="setFilter('today')">Today\u2019s agenda${agendaCount?' ('+agendaCount+')':''}</button>
+ const displayed=mapFilter==='today'?agendaCount:subtreeNodes(currentGroup).length;
+ const showFilter=opts.filter!==false&&displayed>1;
+ return progressLine(true)+`<div class="chips" role="tablist">
+   <button class="chip ${mapFilter==='all'?'on':''}" role="tab" aria-selected="${mapFilter==='all'}" onclick="setFilter('all')">All decisions</button>
+   <button class="chip ${mapFilter==='today'?'on':''}" role="tab" aria-selected="${mapFilter==='today'}" onclick="setFilter('today')">Today\u2019s agenda${agendaCount?' ('+agendaCount+')':''}</button>
    <span class="spacer"></span>
-   <button class="chip lkt ${hideLocked?'on':''}" onclick="toggleLocked()">Hide locked</button>
+   ${showFilter?`<div class="filter-wrap">
+     <button class="filter-btn ${hideStatus.size?'active':''}" aria-haspopup="true" aria-expanded="${filterOpen}" onclick="toggleFilterMenu(event)">Show ${hideStatus.size?'selected':'all'}<span class="fcaret">▾</span></button>
+     <div class="filter-menu ${filterOpen?'show':''}" role="menu">${[['lo','Decided'],['de','Proposed'],['ns','Open']].map(s=>`<label class="fm-opt"><input type="checkbox" ${!hideStatus.has(s[0])?'checked':''} onchange="toggleHide('${s[0]}')">${s[1]}</label>`).join('')}</div>
+   </div>`:''}
  </div>`;
 }
 
@@ -1588,6 +1729,7 @@ function renderMap(){
  else if(!currentGroup)html+=engTreeHtml();
  else html+=groupFocusHtml(currentGroup);
  el.innerHTML=html;
+ refreshTopActions();
 }
 function todayHtml(){
  const vis=visibleNodes();
@@ -1622,17 +1764,17 @@ function scopeHeadHtml(g){
  const count=sub.filter(n=>n.status!=='lo').length+' open of '+sub.length;
  if(editMode){
   return `<div class="scope-h-ed">
-    <span class="lv">${esc(levName(depth))}</span>
-    <input value="${esc(g.name)}" onchange="edGroup('${g.id}',this)">
-    <small>${count}</small>${miniBarHtml(sub)}
+    <span class="scope-htxt"><span class="scope-lv">${esc(levName(depth))}</span><input value="${esc(g.name)}" onchange="edGroup('${g.id}',this)"></span>
+    <span class="scope-rule"></span>
+    <span class="scope-meta"><small>${count}</small>${miniBarHtml(sub)}
     <button class="btn ghost sm" onclick="setScope('${g.id}')">Open ›</button>
-    <button class="ibtn" title="Delete" onclick="delGroup('${g.id}')">✕</button>
+    <button class="ibtn" title="Delete" onclick="delGroup('${g.id}')">✕</button></span>
   </div>`;
  }
  return `<button class="scope-h" onclick="setScope('${g.id}')">
-   <span class="lv">${esc(levName(depth))}</span>
-   <h3>${esc(g.name)} <span class="drill">›</span></h3>
-   <small>${count}</small>${miniBarHtml(sub)}
+   <span class="scope-htxt"><span class="scope-lv">${esc(levName(depth))}</span><h3>${esc(g.name)} <span class="drill">›</span></h3></span>
+   <span class="scope-rule"></span>
+   <span class="scope-meta"><small>${count}</small>${miniBarHtml(sub)}</span>
  </button>`;
 }
 function scopeGridHtml(nodes,gid){
@@ -1657,7 +1799,7 @@ function groupSecHtml(g){
 function engTreeHtml(){
  const engNodes=nodesAt(null);
  let html=(Q.map&&!engNodes.some(n=>matchQ(n,Q.map)))?''
-  :`<div class="scope-sec"><div class="scope-h eng"><span class="lv">${esc(levName(0))}</span><h3>Foundations</h3></div>${scopeGridHtml(engNodes,null)}</div>`;
+  :`<div class="scope-sec"><div class="scope-h eng"><span class="scope-htxt"><span class="scope-lv">${esc(levName(0))}</span><h3>Foundations</h3></span><span class="scope-rule"></span></div>${scopeGridHtml(engNodes,null)}</div>`;
  html+=`<div class="chs">${grpChildren(null).map(groupSecHtml).join('')}`;
  if(editMode&&S.levelNames.length>1)html+=`<button class="qlink" onclick="addTopGroup()">+ Add ${esc(levName(1).toLowerCase())}</button>`;
  html+=`</div>`;
@@ -1696,7 +1838,7 @@ function settingsPanelHtml(){
   html+=`<div style="margin-top:6px"><button class="qlink" onclick="addLevel()">+ Add deeper level</button></div>`;
   html+=`<span class="ef-lab">Tiers</span>`;
   S.tiers.sort((a,b)=>a.n-b.n).forEach(t=>{
-   html+=`<div class="fact-row"><input class="ti" style="width:200px;flex:0 0 auto" value="${esc(t.t)}" onchange="edTier(${t.n},'t',this)"><input class="ti fv" value="${esc(t.s||'')}" placeholder="What this tier covers" onchange="edTier(${t.n},'s',this)"><button class="ibtn" onclick="delTier(${t.n})">✕</button></div>`;
+   html+=`<div class="fact-row"><input class="ti fv" value="${esc(t.t)}" onchange="edTier(${t.n},'t',this)"><button class="ibtn" onclick="delTier(${t.n})">✕</button></div>`;
   });
   html+=`<div style="margin-top:8px"><button class="qlink" onclick="addTier()">+ Add tier</button></div>`;
  }
@@ -1744,17 +1886,24 @@ function nodeCardHtml(n,withScope){
    `<span class="sub-row" role="button" tabindex="0" onclick="event.stopPropagation();openNode('${k.id}')" oncontextmenu="cardMenu(event,'${k.id}')"><span class="sub-sq ${k.blocked?'bl':k.status}"></span>${esc(k.title)}</span>`).join(''):'')+
   `</div>`;
  }
- return `<button class="node-card ${n.blocked?'bl':n.status}${tag?' tagged':''}" onclick="openNode('${n.id}')" oncontextmenu="cardMenu(event,'${n.id}')">
+ const overdue=n.due&&!n.gov&&n.status==='ns'&&isOverdue(n.due);
+ const win=n.due?(overdue?'Overdue '+fmtD(n.due):'Due '+fmtD(n.due)):'';
+ const statusWord=n.blocked?'Blocked':STATUS_LABEL[n.status];
+ const deps=(n.dependsOn||[]).filter(d=>byId(d)).length;
+ const aria=esc(n.title+' — '+statusWord+(dec?': '+dec:'')+(win?', '+win:'')+(deps?', depends on '+deps:''));
+ const meta=[win,deps?deps+' dep'+(deps>1?'s':''):''].filter(Boolean).join(' · ');
+ return `<button class="node-card ${n.blocked?'bl':n.status}${tag?' tagged':''}" onclick="openNode('${n.id}')" oncontextmenu="cardMenu(event,'${n.id}')" aria-label="${aria}" title="${aria}">
      ${tag?`<span class="ctag ${tag[1]}">${tag[0]}</span>`:''}
      ${withScope?`<div class="sc-lab">${esc(scopeLabelOf(n))}</div>`:''}
      <div class="nc-t">${esc(n.title)}</div>
      ${dec?`<div class="dec">${esc(dec)}</div>`:''}
+     ${meta?`<div class="nc-meta${overdue?' overdue':''}">${esc(meta)}</div>`:''}
      ${subHtml}
    </button>`;
 }
 function tierSectionHtml(t,nodes,withScope){
  let html=`<div class="tier"><div class="tier-h">`;
- html+=`<h3>${esc(t.t)}</h3>${t.s?`<small>${esc(t.s)}</small>`:''}`;
+ html+=`<h3>${esc(t.t)}</h3>`;
  html+=`</div><div class="grid">`;
  nodes.forEach(n=>{html+=nodeCardHtml(n,withScope);});
  if(editMode)html+=`<button class="add-card" onclick="openAddChooser(${t.n})">+ Add decision</button>`;
@@ -1799,13 +1948,27 @@ function renderSession(){
    <button class="btn ghost sm" ${!nextId?'disabled':''} onclick="openNode('${nextId||''}')">Next ›</button>
   </div>`;
 
- el.innerHTML=headerHtml()+barHtml+`<div class="card hero-rule bracket-tr"><div class="card-b">`+
+ el.innerHTML=headerHtml({filter:false})+barHtml+`<div class="card hero-rule bracket-tr"><div class="card-b">`+
    (editMode?renderEditor(n):renderFacilitation(n))+`</div></div>`;
 }
 
+function metaStripHtml(n){
+ const tierName=(S.tiers.find(t=>t.n===n.tier)||{}).t||('Tier '+n.tier);
+ const cells=[];
+ if(!inTemplate){
+  const st=n.blocked?'bl':n.status;
+  const stLabel=n.blocked?'Blocked':STATUS_LABEL[n.status];
+  cells.push(['Status',`<span class="mv-status"><span class="mv-sq ${st}"></span>${stLabel}</span>`]);
+ }
+ cells.push(['Tier',esc(tierName)]);
+ if(n.due&&!inTemplate){const over=n.status==='ns'&&!n.gov&&isOverdue(n.due);
+  cells.push([over?'Overdue':'Due',`<span class="${over?'mv-over':''}">${fmtD(n.due)}</span>`]);}
+ if(!inTemplate&&n.outcome&&n.outcome.date)cells.push(['Decided',fmtD(n.outcome.date)]);
+ return `<div class="meta-strip">`+cells.map(c=>`<div class="meta-cell"><span class="meta-k">${c[0]}</span><span class="meta-v">${c[1]}</span></div>`).join('')+`</div>`;
+}
 function renderFacilitation(n){
  const deps=n.dependsOn.map(d=>{const dn=byId(d);
-   return dn?`<b>${esc(dn.title)}</b>${dn.outcome?' ('+esc(optLabel(dn,dn.outcome.optionId))+')':''}`:''}).filter(Boolean).join(' · ');
+   return dn?`<span class="dep-item"><span class="dep-sq ${dn.blocked?'bl':dn.status}" title="${esc(dn.blocked?'Blocked':STATUS_LABEL[dn.status])}"></span><button class="qlink" onclick="openNode('${dn.id}')">${esc(dn.title)}</button>${dn.outcome?' ('+esc(optLabel(dn,dn.outcome.optionId))+')':''}</span>`:''}).filter(Boolean).join(' · ');
 
  const editable=n.status!=='lo'&&viewRole!=='viewer';
  const picked=n._proposed||(n.outcome&&n.outcome.optionId)||null;
@@ -1886,6 +2049,7 @@ function renderFacilitation(n){
  let actHtml='<div class="act-row">';
  if(editable)actHtml+=`<button class="btn primary" onclick="recordDecision('${n.id}')">${n.outcome?'Update decision':'Record consensus'}</button>`;
  if(n.status==='de')actHtml+=`<button class="btn secondary" onclick="lockNode('${n.id}')">Lock decision</button>`;
+ if(n.status==='de')actHtml+=`<button class="btn danger" onclick="unproposeNode('${n.id}')">Reopen</button>`;
  if(n.status==='lo')actHtml+=`<button class="btn danger" onclick="reopenNode('${n.id}')">Reopen</button>`;
  actHtml+='<span class="spacer"></span>';
  if(editable)actHtml+=`<button class="qlink ${n.blocked?'':'warn'}" onclick="toggleBlock('${n.id}')">${n.blocked?'Clear blocker':'Flag blocker'}</button>`;
@@ -1895,14 +2059,11 @@ function renderFacilitation(n){
  if(inTemplate){commHtml='';consHtml='';outHtml='';actHtml='';}
  if(viewRole==='viewer')actHtml='';
  const subMark=n.parentId?'Sub-decision · ':'';
- const dWin=(n.start||n.end)?` · ${fmtD(n.start)||'…'} → ${fmtD(n.end)||'…'}`:'';
- const dEy=inTemplate
-  ?`${subMark}${esc(scopeLabelOf(n))} · Tier ${n.tier} · Template${dWin}`
-  :`${subMark}${esc(scopeLabelOf(n))} · Tier ${n.tier} · <span class="ey-${n.status}">${STATUS_LABEL[n.status]}</span>${n.outcome&&n.outcome.date?' · '+esc(n.outcome.date):''}${dWin}`;
- return `<div class="d-ey">${dEy}</div>
+ return `<div class="d-ey">${subMark}${esc(scopeLabelOf(n))}${inTemplate?' · Template':''}</div>
    <div class="p-title">${esc(n.title)}</div>
    <div class="p-q">${esc(n.question)}</div>
    ${parentLine}
+   ${metaStripHtml(n)}
    ${deps?`<div class="dep-line">Depends on: ${deps}</div>`:''}
    ${optHtml}
    ${clearHtml}
@@ -1943,15 +2104,13 @@ function renderEditor(n){
   html+=`<div class="dep-line" style="margin-top:12px">Sub-decision of <b>${esc(par?par.title:'')}</b> — inherits its tier and scope
    <button class="qlink" style="margin-left:8px" onclick="promoteSub('${n.id}')">Detach</button></div>`;
  }
- html+=`<div class="ef-grid" style="margin-top:12px">
-   <div><span class="ef-lab" style="margin-top:0">Start date <small style="color:var(--gray);font-weight:400">(optional)</small></span>
-    <input type="date" class="ti" ${dis} value="${esc(n.start||'')}" onchange="ed('start','${n.id}',this,'Start date')"></div>
-   <div><span class="ef-lab" style="margin-top:0">End date <small style="color:var(--gray);font-weight:400">(optional)</small></span>
-    <input type="date" class="ti" ${dis} value="${esc(n.end||'')}" onchange="ed('end','${n.id}',this,'End date')"></div>
+ if(!inTemplate)html+=`<div class="ef-grid" style="margin-top:12px">
+   <div><span class="ef-lab" style="margin-top:0">Decision deadline <small style="color:var(--gray);font-weight:400">(optional)</small></span>
+    <input type="date" class="ti" ${dis} value="${esc(n.due||'')}" onchange="ed('due','${n.id}',this,'Decision deadline')"></div>
   </div>`;
  html+=`<span class="ef-lab">Depends on</span>
   <div class="dep-checks">`+
-  S.nodes.filter(x=>x.id!==n.id).map(x=>`<label><input type="checkbox" ${n.dependsOn.includes(x.id)?'checked':''} ${dis} onchange="toggleDep('${n.id}','${x.id}',this)">${esc(x.title)}</label>`).join('')+
+  S.nodes.filter(x=>x.id!==n.id&&!x.gov&&!x.parentId).map(x=>`<label><input type="checkbox" ${n.dependsOn.includes(x.id)?'checked':''} ${dis} onchange="toggleDep('${n.id}','${x.id}',this)">${esc(x.title)}</label>`).join('')+
  `</div>
   <span class="ef-lab">Options</span>`;
 
@@ -2025,10 +2184,10 @@ function addDissent(nid){
  renderSession();
  restoreRationale(n);
 }
-function edDissent(nid,i,field,el){
+async function edDissent(nid,i,field,el){
  const n=byId(nid);
  let v=el.value;
- if(field==='who'&&v==='__other'){v=prompt('Name:')||'';el.value=v;}
+ if(field==='who'&&v==='__other'){v=(await uiPrompt('',{title:'Member name',placeholder:'Name',okLabel:'Add'}))||'';el.value=v;}
  n._dissents[i][field]=v;markDirty();
 }
 function delDissent(nid,i){
@@ -2047,18 +2206,27 @@ function recordDecision(id){
  const ta=document.getElementById('ratTa');
  const rat=ta?ta.value.trim():'';
  const dissents=(n._dissents||[]).filter(d=>d.note.trim()).map(d=>({who:d.who,note:d.note.trim()}));
- const had=!!n.outcome;
- const changed=had&&n.outcome.optionId!==pick;
- n.outcome={optionId:pick,rationale:rat,dissents,date:new Date().toISOString().slice(0,10)};
+ const prev=n.outcome;
+ const had=!!prev;
+ // did anything real change? compare option, rationale, and concerns — not the date
+ const optChanged=!had||prev.optionId!==pick;
+ const ratChanged=had&&(prev.rationale||'')!==rat;
+ const disChanged=had&&JSON.stringify(prev.dissents||[])!==JSON.stringify(dissents);
+ if(had&&!optChanged&&!ratChanged&&!disChanged){
+  // nothing changed — leave the record and the change log untouched
+  delete n._proposed;delete n._dissents;delete n._rat;
+  renderSession();toast('No changes to record.');return;
+ }
+ n.outcome={optionId:pick,rationale:rat,dissents,date:had?prev.date:new Date().toISOString().slice(0,10)};
  n.status='de';n.blocked=false;
  if((n.ch||n.pn)&&n.groupId){const g=grpById(n.groupId);if(g)g.name=optLabel(n,pick);}
  paintMeta();
  delete n._proposed;delete n._dissents;delete n._rat;
  if(had){n.amended=true;
   S.changes.push({date:new Date().toISOString().slice(0,16).replace('T',' '),nodeId:n.id,nodeTitle:n.title,
-   desc:changed?('Consensus changed to "'+optLabel(n,pick)+'"'):'Decision record updated'});}
+   desc:optChanged?('Consensus changed to "'+optLabel(n,pick)+'"'):'Decision record updated'});}
  markDirty();renderSession();
- toast('Consensus recorded: '+optLabel(n,pick));
+ toast(had?'Decision updated.':'Consensus recorded: '+optLabel(n,pick));
 }
 function lockNode(id){
  const n=byId(id);
@@ -2066,10 +2234,21 @@ function lockNode(id){
  if(open.length){toast('Lock its sub-decisions first — '+open.length+' still open.');return;}
  n.status='lo';markDirty();renderSession();
  toast('Locked.');}
-function reopenNode(id){
+async function unproposeNode(id){
+ const n=byId(id);
+ if(n.parentId){const p=byId(n.parentId);if(p&&p.status==='lo'){toast('Reopen the parent decision first.');return;}}
+ if(!await uiConfirm('Reopen this decision for discussion? The recorded consensus and any documented concerns will be cleared and it returns to Open.',{title:'Reopen decision',okLabel:'Reopen',danger:true}))return;
+ n.status='ns';
+ delete n.outcome;delete n._proposed;delete n._dissents;delete n._rat;
+ n.amended=true;
+ S.changes.push({date:new Date().toISOString().slice(0,16).replace('T',' '),nodeId:n.id,nodeTitle:n.title,desc:'Reopened for discussion — consensus cleared'});
+ paintMeta();markDirty();renderSession();
+ toast('Reopened.');
+}
+async function reopenNode(id){
  const nn=byId(id);
  if(nn.parentId){const p=byId(nn.parentId);if(p&&p.status==='lo'){toast('Reopen the parent decision first.');return;}}
- const note=prompt('Change request note (pricing / timeline impact):');
+ const note=await uiPrompt('Note the pricing / timeline impact of reopening this decision.',{title:'Reopen decision',placeholder:'Change request note',okLabel:'Reopen'});
  if(!note)return;
  const n=byId(id);
  n.status='de';
@@ -2077,10 +2256,10 @@ function reopenNode(id){
  S.changes.push({date:new Date().toISOString().slice(0,16).replace('T',' '),nodeId:n.id,nodeTitle:n.title,desc:'Reopened: '+note});
  n.amended=true;markDirty();renderSession();
 }
-function toggleBlock(id){
+async function toggleBlock(id){
  const n=byId(id);
  if(n.blocked){n.blocked=false;n.blockNote='';}
- else{const note=prompt('Blocker — what\u2019s needed and who owns it?');if(note===null)return;n.blocked=true;n.blockNote=note;}
+ else{const note=await uiPrompt('What’s needed, and who owns it?',{title:'Flag blocker',placeholder:'Blocker note',okLabel:'Flag'});if(note===null)return;n.blocked=true;n.blockNote=note;}
  markDirty();renderSession();
 }
 
@@ -2088,18 +2267,18 @@ function toggleBlock(id){
 function renderGantt(){
  const el=document.getElementById('view-gantt');
  if(!el)return;
- const dated=S.nodes.filter(n=>n.start&&n.end);
+ const dated=S.nodes.filter(n=>n.due);
  let html=progressLine();
  const undated=S.nodes.length-dated.length;
  if(!dated.length){
-  el.innerHTML=html+'<div class="empty">No decisions have dates yet. Set start and end dates in the decision editor.</div>';
+  el.innerHTML=html+'<div class="empty">No decisions have deadlines yet. Set a decision deadline in the decision editor.</div>';
   return;
  }
  const P=s=>new Date(s+'T00:00:00').getTime();
  const DAY=86400000;
- let min=Math.min.apply(null,dated.map(n=>P(n.start)))-3*DAY;
- let max=Math.max.apply(null,dated.map(n=>P(n.end)))+3*DAY;
- const span=max-min;
+ let min=Math.min.apply(null,dated.map(n=>P(n.due)))-5*DAY;
+ let max=Math.max.apply(null,dated.map(n=>P(n.due)))+5*DAY;
+ const span=max-min||DAY;
  const pct=t=>((t-min)/span*100).toFixed(2);
  let months='',grid='';
  const cur=new Date(min);cur.setDate(1);
@@ -2112,10 +2291,13 @@ function renderGantt(){
  }
  const now=Date.now();
  const today=(now>=min&&now<=max)?`<div class="g-today" style="left:${pct(now)}%"></div>`:'';
+ let anyOver=false;
  const rowHtml=(n,sub)=>{
-  const l=parseFloat(pct(P(n.start)));
-  const w=Math.max(parseFloat(pct(P(n.end)+DAY))-l,0.8);
-  return `<div class="g-row"><span class="g-lab${sub?' sub':''}" role="button" tabindex="0" onclick="openNode('${n.id}')" title="${esc(n.title)}">${esc(n.title)}</span><span class="g-track"><span class="g-bar ${n.blocked?'bl':n.status}" style="left:${l}%;width:${w}%" title="${esc(n.title)} · ${esc(n.start)} → ${esc(n.end)}" onclick="openNode('${n.id}')"></span></span></div>`;
+  const x=parseFloat(pct(P(n.due)));
+  const over=n.status==='ns'&&!n.gov&&P(n.due)<now;
+  if(over)anyOver=true;
+  const cls=(n.blocked?'bl':n.status)+(over?' overdue':'');
+  return `<div class="g-row"><span class="g-lab${sub?' sub':''}" role="button" tabindex="0" onclick="openNode('${n.id}')" title="${esc(n.title)}">${esc(n.title)}</span><span class="g-track"><span class="g-mile ${cls}" style="left:${x}%" title="${esc(n.title)} · due ${esc(fmtD(n.due))}${over?' · overdue':''}" onclick="openNode('${n.id}')"></span></span></div>`;
  };
  const secs=[['Foundations',nodesAt(null)]];
  const walkG=pid=>{grpChildren(pid).forEach(g=>{secs.push([g.name,nodesAt(g.id)]);walkG(g.id);});};
@@ -2124,13 +2306,13 @@ function renderGantt(){
  secs.forEach(sec=>{
   let rows='';
   sec[1].forEach(n=>{
-   if(n.start&&n.end&&matchQ(n,Q.gantt))rows+=rowHtml(n,false);
-   childrenOf(n.id).forEach(k=>{if(k.start&&k.end&&matchQ(k,Q.gantt))rows+=rowHtml(k,true);});
+   if(n.due&&matchQ(n,Q.gantt))rows+=rowHtml(n,false);
+   childrenOf(n.id).forEach(k=>{if(k.due&&matchQ(k,Q.gantt))rows+=rowHtml(k,true);});
   });
   if(rows)body+=`<div class="g-sec">${esc(sec[0])}</div>`+rows;
  });
  html+=`<div class="gantt"><div class="g-overlay">${grid}${today}</div><div class="g-head">${months}</div>${body}</div>`;
- html+=`<div class="g-legend"><span class="sw sw-ns"></span>Open&ensp;<span class="sw sw-de"></span>Proposed&ensp;<span class="sw sw-lo"></span>Decided${undated?`&ensp;·&ensp;${undated} decision${undated>1?'s':''} without dates`:''}</div>`;
+ html+=`<div class="g-legend"><span class="sw sw-ns"></span>Open&ensp;<span class="sw sw-de"></span>Proposed&ensp;<span class="sw sw-lo"></span>Decided${anyOver?'&ensp;·&ensp;<span class="od">Overdue</span> = past deadline, not decided':''}${undated?`&ensp;·&ensp;${undated} decision${undated>1?'s':''} without a deadline`:''}</div>`;
  el.innerHTML=html;
 }
 
@@ -2157,17 +2339,28 @@ function renderLog(){
     ${chgs.length?`<div class="note"><b>Amendments:</b> ${chgs.map(c=>esc(c.desc)+' ('+esc(c.date)+')').join('; ')}</div>`:''}
   </div>`;
  });
- if(S.changes.length){
-  html+=`<details class="chg" style="margin-top:16px"><summary>Change history (${S.changes.length})</summary>
-   <div class="card" style="margin-top:8px"><div class="card-b">`+
-   S.changes.map(c=>`<div class="chg-item"><span class="chg-date">${esc(c.date)}</span><span class="chg-node">${esc(c.nodeTitle)}</span><span>${esc(c.desc)}</span></div>`).join('')+
-  `</div></div></details>`;
+ const canEditLog=viewRole==='admin';
+ if(S.changes.length||(canEditLog&&logEdit)){
+  const rows=S.changes.map((c,i)=>canEditLog&&logEdit
+    ? `<div class="chg-item ed"><span class="chg-date">${esc(c.date)}</span><span class="chg-node">${esc(c.nodeTitle)}</span><input class="ti fv" value="${esc(c.desc)}" onchange="edLogEntry(${i},this)"><button class="ibtn" title="Delete entry" onclick="delLogEntry(${i})">✕</button></div>`
+    : `<div class="chg-item"><span class="chg-date">${esc(c.date)}</span><span class="chg-node">${esc(c.nodeTitle)}</span><span>${esc(c.desc)}</span></div>`).join('')
+   ||`<div class="empty" style="padding:10px">No changes logged.</div>`;
+  html+=`<details class="chg" style="margin-top:16px"${logEdit&&canEditLog?' open':''}><summary>Change history (${S.changes.length})</summary>
+   ${canEditLog?`<div class="log-edit-row"><button class="qlink" onclick="toggleLogEdit()">${logEdit?'Done editing':'Edit entries'}</button></div>`:''}
+   <div class="card" style="margin-top:8px"><div class="card-b">${rows}</div></div></details>`;
  }
  el.innerHTML=html;
 }
 function dissentLines(n){
  const ds=(n.outcome&&n.outcome.dissents)||[];
  return ds.map(d=>(d.who?'<b>'+esc(d.who)+':</b> ':'')+esc(d.note)).join('<br>');
+}
+function toggleLogEdit(){if(viewRole!=='admin')return;logEdit=!logEdit;renderLog();}
+function edLogEntry(i,el){if(viewRole!=='admin')return;const c=S.changes[i];if(!c||c.desc===el.value)return;c.desc=el.value;markDirty();}
+async function delLogEntry(i){
+ if(viewRole!=='admin')return;
+ if(!await uiConfirm('Delete this change-history entry? This cannot be undone.',{title:'Delete log entry',okLabel:'Delete',danger:true}))return;
+ S.changes.splice(i,1);markDirty();renderLog();
 }
 
 /* ---------- EXPORT ---------- */
@@ -2184,7 +2377,7 @@ function exportJson(){
    options:n.options.map(o=>({label:o.label,description:o.desc||'',details:(o.facts||[]).filter(f=>f.v).map(f=>f.k+': '+f.v),liRecommends:n.liRec===o.id})),
    liRationale:n.liRationale||''
   };
-  if(n.start||n.end)d.timeline={start:n.start||'',end:n.end||''};
+  if(n.due)d.deadline=n.due;
   if(n.blocked)d.blockerNote=n.blockNote||'';
   if(n.outcome)d.decision={
    chosen:optLabel(n,n.outcome.optionId),
@@ -2249,9 +2442,9 @@ function commAdd(){
  commLog();markDirty();renderSession();
  restoreRationale(byId(currentNode));
 }
-function commDel(i){
+async function commDel(i){
  if(S.members.length<=2){toast('Keep at least two members.');return;}
- if(!confirm('Remove '+S.members[i].name+' from the committee?'))return;
+ if(!await uiConfirm('Remove '+S.members[i].name+' from the committee?',{title:'Remove member',okLabel:'Remove',danger:true}))return;
  stashRationale();
  S.members.splice(i,1);
  commLog();markDirty();renderSession();
