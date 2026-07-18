@@ -952,7 +952,7 @@ function guardLocked(n){
 
 /* ============ PERSISTENCE ============ */
 async function persistSave(){
- const data=JSON.stringify(DB);let where='';
+ const data=JSON.stringify(DB,(k,v)=>k&&k.charAt(0)==='_'?undefined:v);let where='';  // never persist transient staging fields (_proposed/_dissents/_rat)
  try{
    if(window.storage&&window.storage.set){await window.storage.set(STORE_KEY,data);where='auto';}
    else throw 0;
@@ -1663,6 +1663,7 @@ function refreshTopActions(){
 function showView(v){
  if(v!=='home'&&!S)v='home';
  if(viewRole!=='admin'&&v==='home')v='map';
+ if(currentView==='sess'&&v!=='sess'&&currentNode)discardStaged(currentNode);  // leaving the card discards uncommitted edits
  currentView=v;
  if(v==='home')inTemplate=false;
  ['home','map','sess','gantt','log'].forEach(x=>{
@@ -1923,7 +1924,17 @@ function tierGroupsHtml(vis,withScope){
 function optLabel(n,oid){const op=n.options.find(x=>x.id===oid);return op?op.label:'';}
 
 /* ---------- DETAIL (drill-down from map) ---------- */
+// Drop a card's staged-but-uncommitted edits (option pick / concerns / rationale).
+// These live on the node only until "Record consensus"/"Update decision" commits them.
+function discardStaged(id){
+ const n=id?byId(id):null;
+ if(!n)return false;
+ const had=('_proposed'in n)||('_dissents'in n)||('_rat'in n);
+ delete n._proposed;delete n._dissents;delete n._rat;
+ return had;
+}
 function openNode(id){
+ if(currentNode&&currentNode!==id)discardStaged(currentNode);  // leaving a card without committing = back out
  const n=byId(id);
  if(n&&mapFilter!=='today')currentGroup=n.groupId||null;
  currentNode=id;showView('sess');
@@ -2166,11 +2177,8 @@ function selectOption(nid,oid){
  restoreRationale(n);
 }
 function clearPick(nid){
- const n=byId(nid);
- stashRationale();
- n._proposed=null;
+ discardStaged(nid);  // fully revert to the recorded decision (option, concerns, rationale)
  markDirty();renderSession();
- restoreRationale(n);
 }
 function stashRationale(){
  const ta=document.getElementById('ratTa');
