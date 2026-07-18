@@ -349,6 +349,17 @@ textarea::placeholder,.ti::placeholder{color:rgba(94,104,111,.7)}
 .ef-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
 
 /* ===== Log ===== */
+.log-controls{display:flex;align-items:center;flex-wrap:wrap;gap:12px 16px;margin:14px 0 18px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.lc-seg{display:inline-flex;border:1px solid var(--line)}
+.lc-tab{padding:6px 15px;font-family:var(--disp);font-weight:600;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--gray);background:#fff}
+.lc-tab:hover{color:var(--navy)}
+.lc-tab.on{background:var(--navy);color:#fff}
+.lc-count{font-size:12px;color:var(--gray);font-variant-numeric:tabular-nums}
+.lc-spacer{flex:1;min-width:8px}
+.lc-field{display:inline-flex;align-items:center;gap:7px;font-family:var(--disp);font-weight:600;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray)}
+.lc-field select{font-family:var(--sans);font-weight:400;font-size:12.5px;text-transform:none;letter-spacing:0;color:var(--navy);border:1px solid var(--line);border-radius:0;padding:5px 8px;background:#fff;cursor:pointer}
+.lc-field select:hover{border-color:var(--gray)}
+.log-grid{margin-top:2px}
 .log-item{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:0;padding:13px 15px;margin-bottom:10px}
 .log-item.lo{border-left-color:var(--navy)}
 .log-h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
@@ -544,7 +555,7 @@ details.chg summary{cursor:pointer;font-family:var(--disp);font-weight:600;font-
 const STORE_KEY='li-decision-hub-v3';
 const TEMPLATE_TYPES=['FIA','MYGA','RILA','SPIA','VA','IUL','UL','VUL','WL','Term','Hybrid','Other'];
 const RESERVED_CODES=['hub','templates'];
-let dirty=false,saveTimer=null,editMode=false,currentNode=null,currentView='home',currentGroup=null,hideStatus=new Set(),filterOpen=false,renamingId=null,pendingAdd=null,pendingLib=null,inTemplate=false,hubTab='eng',addFilter='all',viewRole='admin',settingsOpen=false,logEdit=false;
+let dirty=false,saveTimer=null,editMode=false,currentNode=null,currentView='home',currentGroup=null,hideStatus=new Set(),filterOpen=false,renamingId=null,pendingAdd=null,pendingLib=null,inTemplate=false,hubTab='eng',addFilter='all',viewRole='admin',settingsOpen=false,logEdit=false,logView='condensed',logSort='date-desc',logStatus='all',logGroup='';
 
 function nd(id,tier,title,question,options,rec,rationale,status,outcome,deps){
  return {id,tier,title,question,options,liRec:rec,liRationale:rationale||'',
@@ -865,28 +876,54 @@ function uniqueCode(code,selfId){
  while(RESERVED_CODES.includes(c.toLowerCase())||DB.engagements.some(e=>e.id!==selfId&&(e.data.meta.code||'')===c))c=code+'-'+(i++);
  return c;
 }
-function applyRoute(){
- const m=location.hash.match(/^#\/(.+)/);
- const code=m?decodeURIComponent(m[1]):'hub';
- if(code==='hub'){if(currentView!=='home'){if(hubTab==='tpl')hubTab='eng';showView('home');}return;}
- if(code==='templates'){
-  if(inTemplate)return;
-  if(currentView!=='home'||hubTab!=='tpl'){hubTab='tpl';showView('home');}
-  return;
- }
- const e=DB.engagements.find(x=>(x.data.meta.code||'')===code);
- if(!e){showView('home');return;}
- if(DB.activeId!==e.id||currentView==='home'||inTemplate)openEngagement(e.id);
+/* ---------- URL routing: the hash is the single source of truth for navigation ---------- */
+const scrollMem={};
+let suppressRoute=false;
+function stateHash(){
+ if(currentView==='home')return hubTab==='tpl'?'#/templates':'#/hub';
+ if(inTemplate)return '#/templates';
+ const code=encodeURIComponent((S&&S.meta&&S.meta.code)||'');
+ if(!code)return '#/hub';
+ if(currentView==='sess'&&currentNode)return '#/'+code+'/decision/'+encodeURIComponent(currentNode);
+ if(currentView==='gantt')return '#/'+code+'/milestones';
+ if(currentView==='log')return '#/'+code+'/log';
+ return currentGroup?'#/'+code+'/map/'+encodeURIComponent(currentGroup):'#/'+code;
 }
-window.addEventListener('hashchange',()=>{if(DB)applyRoute();});
+function writeHash(replace){
+ const h=stateHash();
+ if(location.hash===h)return;
+ if(replace){history.replaceState(null,'',location.pathname+location.search+h);}
+ else{suppressRoute=true;location.hash=h;}
+}
+function applyRoute(){
+ const raw=location.hash.replace(/^#\/?/,'');
+ const parts=raw?raw.split('/').map(s=>{try{return decodeURIComponent(s);}catch(e){return s;}}):[];
+ const seg=parts[0]||'hub';
+ if(currentView==='sess'&&currentNode)discardStaged(currentNode);  // Back-ing off a card discards uncommitted edits
+ if(seg===''||seg==='hub'){hubTab='eng';inTemplate=false;currentView='home';applyView();return;}
+ if(seg==='templates'){hubTab='tpl';inTemplate=false;currentView='home';applyView();return;}
+ const e=DB.engagements.find(x=>(x.data.meta.code||'')===seg);
+ if(!e){currentView='home';applyView();return;}
+ if(DB.activeId!==e.id||inTemplate||!S)loadEngagementData(e.id);
+ const view=parts[1]||'map',id=parts[2]||null;
+ if(view==='decision'&&id&&byId(id)){currentNode=id;currentView='sess';}
+ else if(view==='milestones'){currentView='gantt';}
+ else if(view==='log'){currentView='log';}
+ else{currentGroup=(id&&grpById(id))?id:null;currentView='map';}
+ applyView();
+}
+window.addEventListener('hashchange',()=>{if(suppressRoute){suppressRoute=false;return;}if(DB)applyRoute();});
+window.addEventListener('scroll',()=>{if(DB&&S)scrollMem[stateHash()]=window.scrollY;},{passive:true});
 function activeEng(){return DB.engagements.find(e=>e.id===DB.activeId);}
-function openEngagement(id){
- const e=DB.engagements.find(x=>x.id===id);
- if(!e){showView('home');return;}
- inTemplate=false;
- DB.activeId=id;S=e.data;
+function loadEngagementData(id){
+ const e=DB.engagements.find(x=>x.id===id);if(!e)return false;
+ inTemplate=false;DB.activeId=id;S=e.data;
  currentNode=null;currentGroup=null;mapFilter='all';hideStatus.clear();settingsOpen=false;
  Q.map='';Q.gantt='';Q.log='';
+ return true;
+}
+function openEngagement(id){
+ if(!loadEngagementData(id)){showView('home');return;}
  currentView='map';
  renderAll();dirtyPersist();
 }
@@ -1621,13 +1658,15 @@ document.addEventListener('keydown',e=>{
 const STATUS_LABEL={ns:'Open',de:'Proposed',lo:'Decided'};
 let mapFilter='all';
 
+// The Prev/Next traversal set for a decision — its own context, independent of the map scope.
+function sessList(n){
+ if(mapFilter==='today')return applyHide(subtreeNodes(currentGroup).filter(x=>x.agenda)).slice().sort((a,b)=>a.tier-b.tier);
+ if(n.parentId)return applyHide(childrenOf(n.parentId));
+ return applyHide(nodesAt(n.groupId));
+}
 function setFilter(f){
  mapFilter=f;
- if(currentView==='sess'){
-  const list=visibleNodes();
-  if(list.length&&!list.find(x=>x.id===currentNode))currentNode=list[0].id;
-  renderSession();
- }else renderMap();
+ reRenderFiltered();
 }
 function visibleNodes(){
  if(mapFilter==='today')return applyHide(subtreeNodes(currentGroup).filter(n=>n.agenda)).sort((a,b)=>a.tier-b.tier);
@@ -1636,9 +1675,9 @@ function visibleNodes(){
 
 function reRenderFiltered(){
  if(currentView==='sess'){
-  const list=visibleNodes();
+  const n=byId(currentNode);const list=n?sessList(n):[];
   if(list.length&&!list.find(x=>x.id===currentNode))currentNode=list[0].id;
-  renderSession();
+  renderSession();writeHash(true);  // keep the URL in sync if the visible card changed
  }else renderMap();
 }
 function toggleHide(st){
@@ -1660,12 +1699,8 @@ function refreshTopActions(){
  // Export is available to every role — including viewers — but only when there's decision data to export.
  xb.style.display=(hub||!hasReal)?'none':'';
 }
-function showView(v){
- if(v!=='home'&&!S)v='home';
- if(viewRole!=='admin'&&v==='home')v='map';
- if(currentView==='sess'&&v!=='sess'&&currentNode)discardStaged(currentNode);  // leaving the card discards uncommitted edits
- currentView=v;
- if(v==='home')inTemplate=false;
+function applyView(){
+ const v=currentView;
  ['home','map','sess','gantt','log'].forEach(x=>{
   document.getElementById('view-'+x).style.display=(x===v)?'':'none';
  });
@@ -1687,10 +1722,16 @@ function showView(v){
  if(qi.value!==(Q[qKey()]||''))qi.value=Q[qKey()]||'';
  if(v==='home')renderHome();if(v==='map')renderMap();if(v==='sess')renderSession();if(v==='gantt')renderGantt();if(v==='log')renderLog();
  paintMeta();
- const want=hub?(hubTab==='tpl'?'#/templates':'#/hub'):inTemplate?'#/templates':'#/'+encodeURIComponent((S&&S.meta&&S.meta.code)||'');
- if(want==='#/hub'){if(location.hash)history.replaceState(null,'',location.pathname+location.search);}
- else if(location.hash!==want)location.hash=want;
- window.scrollTo(0,0);
+ window.scrollTo(0,scrollMem[stateHash()]||0);  // restore scroll for this location (Back/return keeps your place)
+}
+function showView(v){
+ if(v!=='home'&&!S)v='home';
+ if(viewRole!=='admin'&&v==='home')v='map';
+ if(currentView==='sess'&&v!=='sess'&&currentNode)discardStaged(currentNode);  // leaving the card discards uncommitted edits
+ currentView=v;
+ if(v==='home')inTemplate=false;
+ applyView();
+ writeHash();  // record this navigation as a history entry
 }
 
 function progressLine(scoped){
@@ -1871,9 +1912,9 @@ function matchQ(n,q){
 }
 function toggleSubs(id){
  if(subsOpen.has(id))subsOpen.delete(id);else subsOpen.add(id);
- renderMap();
+ currentView==='log'?renderLog():renderMap();
 }
-function nodeCardHtml(n,withScope){
+function nodeCardHtml(n,withScope,noSubs){
  const dec=n.outcome?optLabel(n,n.outcome.optionId):'';
  const tag=n.blocked?['Blocked','warn']:(n.agenda&&n.status==='ns'&&mapFilter!=='today')?['Today','today']:null;
  const kids=childrenOf(n.id);
@@ -1899,7 +1940,7 @@ function nodeCardHtml(n,withScope){
      <div class="nc-t">${esc(n.title)}</div>
      ${dec?`<div class="dec">${esc(dec)}</div>`:''}
      ${meta?`<div class="nc-meta${overdue?' overdue':''}">${esc(meta)}</div>`:''}
-     ${subHtml}
+     ${noSubs?'':subHtml}
    </button>`;
 }
 function tierSectionHtml(t,nodes,withScope){
@@ -1935,17 +1976,14 @@ function discardStaged(id){
 }
 function openNode(id){
  if(currentNode&&currentNode!==id)discardStaged(currentNode);  // leaving a card without committing = back out
- const n=byId(id);
- if(n&&mapFilter!=='today')currentGroup=n.groupId||null;
- currentNode=id;showView('sess');
+ currentNode=id;showView('sess');  // does NOT change the map scope — "‹ Map" returns you where you were
 }
 function renderSession(){
  const el=document.getElementById('view-sess');
  if(!S.nodes.length){el.innerHTML='<div class="empty">No decisions yet.</div>';return;}
  if(!currentNode||!byId(currentNode))currentNode=S.nodes[0].id;
  const n=byId(currentNode);
- let list=visibleNodes();
- if(n.parentId)list=applyHide(childrenOf(n.parentId));
+ let list=sessList(n);
  if(!list.length)list=[n];
  const idx=list.findIndex(x=>x.id===n.id);
  const prevId=idx>0?list[idx-1].id:null;
@@ -1959,8 +1997,17 @@ function renderSession(){
    <button class="btn ghost sm" ${!nextId?'disabled':''} onclick="openNode('${nextId||''}')">Next ›</button>
   </div>`;
 
- el.innerHTML=headerHtml({filter:false})+barHtml+`<div class="card hero-rule bracket-tr"><div class="card-b">`+
+ el.innerHTML=headerHtml({filter:false})+(inTemplate?'':nodeCrumbHtml(n))+barHtml+`<div class="card hero-rule bracket-tr"><div class="card-b">`+
    (editMode?renderEditor(n):renderFacilitation(n))+`</div></div>`;
+}
+// breadcrumb on a decision — one click back to the overview or any ancestor group
+function nodeCrumbHtml(n){
+ let html=`<div class="crumb"><button onclick="setScope(null)">${esc(S.meta.engagement)}</button>`;
+ const chain=[];let g=n.groupId?grpById(n.groupId):null;
+ while(g){chain.unshift(g);g=g.parentId?grpById(g.parentId):null;}
+ chain.forEach(gg=>{html+=`<span>›</span><button onclick="setScope('${gg.id}')">${esc(gg.name)}</button>`;});
+ if(n.parentId){const p=byId(n.parentId);if(p)html+=`<span>›</span><button onclick="openNode('${p.id}')">${esc(p.title)}</button>`;}
+ return html+`<span>›</span><b>${esc(n.title)}</b></div>`;
 }
 
 function metaStripHtml(n){
@@ -2328,14 +2375,20 @@ function renderGantt(){
 function renderLog(){
  const el=document.getElementById('view-log');
  const lq=(Q.log||'').toLowerCase();
- const done=decidedNodes().filter(n=>{
+ let done=decidedNodes().filter(n=>{
+  if(logStatus!=='all'&&n.status!==logStatus)return false;
+  if(logGroup&&(n.groupId||'__root')!==logGroup)return false;
   if(!lq)return true;
   const d=n.outcome;
   return [n.title,optLabel(n,d.optionId),d.rationale||'',(d.dissents||[]).map(x=>(x.who||'')+' '+x.note).join(' ')].join(' ').toLowerCase().indexOf(lq)>-1;
  });
- let html=progressLine();
- if(!done.length)html+='<div class="empty">'+(lq?'No log entries match.':'No decisions recorded yet.')+'</div>';
- done.forEach(n=>{
+ done=sortLog(done);
+ let html=progressLine()+logControlsHtml(done.length);
+ const filtered=lq||logStatus!=='all'||logGroup;
+ if(!done.length)html+='<div class="empty">'+(filtered?'No decisions match these filters.':'No decisions recorded yet.')+'</div>';
+ else if(logView==='condensed'){
+  html+='<div class="grid log-grid">'+done.map(n=>nodeCardHtml(n,true,true)).join('')+'</div>';
+ }else done.forEach(n=>{
   const d=n.outcome;
   const chgs=changesFor(n.id);
   html+=`<div class="log-item ${n.status}">
@@ -2359,6 +2412,39 @@ function renderLog(){
  }
  el.innerHTML=html;
 }
+function sortLog(list){
+ const dt=n=>(n.outcome&&n.outcome.date)||'';
+ const arr=list.slice();
+ if(logSort==='date-asc')arr.sort((a,b)=>dt(a).localeCompare(dt(b))||a.title.localeCompare(b.title));
+ else if(logSort==='scope')arr.sort((a,b)=>scopeLabelOf(a).localeCompare(scopeLabelOf(b))||a.tier-b.tier||dt(b).localeCompare(dt(a)));
+ else if(logSort==='tier')arr.sort((a,b)=>a.tier-b.tier||dt(b).localeCompare(dt(a))||a.title.localeCompare(b.title));
+ else if(logSort==='title')arr.sort((a,b)=>a.title.localeCompare(b.title));
+ else arr.sort((a,b)=>dt(b).localeCompare(dt(a))||a.title.localeCompare(b.title));  // date-desc (default)
+ return arr;
+}
+function logControlsHtml(count){
+ const scopeName=s=>s==='__root'?'Foundations':(grpById(s)?grpById(s).name:s);
+ const scopeKeys=[...new Set(decidedNodes().map(n=>n.groupId||'__root'))];
+ const opt=(v,cur,label)=>`<option value="${v}" ${cur===v?'selected':''}>${esc(label)}</option>`;
+ const sortSel=[['date-desc','Decided — newest'],['date-asc','Decided — oldest'],['scope','Scope'],['tier','Tier'],['title','Title A–Z']].map(o=>opt(o[0],logSort,o[1])).join('');
+ const statSel=[['all','All'],['lo','Decided'],['de','Proposed']].map(o=>opt(o[0],logStatus,o[1])).join('');
+ const scopeSel=opt('',logGroup,'All scopes')+scopeKeys.map(k=>opt(k,logGroup,scopeName(k))).join('');
+ return `<div class="log-controls">
+   <div class="lc-seg" role="tablist">
+     <button class="lc-tab ${logView==='condensed'?'on':''}" onclick="setLogView('condensed')">Condensed</button>
+     <button class="lc-tab ${logView==='full'?'on':''}" onclick="setLogView('full')">Full</button>
+   </div>
+   <span class="lc-count">${count} decision${count===1?'':'s'}</span>
+   <span class="lc-spacer"></span>
+   <label class="lc-field"><span>Sort</span><select onchange="setLogSort(this)">${sortSel}</select></label>
+   <label class="lc-field"><span>Status</span><select onchange="setLogStatus(this)">${statSel}</select></label>
+   <label class="lc-field"><span>Scope</span><select onchange="setLogGroup(this)">${scopeSel}</select></label>
+ </div>`;
+}
+function setLogView(v){logView=v;renderLog();}
+function setLogSort(el){logSort=el.value;renderLog();}
+function setLogStatus(el){logStatus=el.value;renderLog();}
+function setLogGroup(el){logGroup=el.value;renderLog();}
 function dissentLines(n){
  const ds=(n.outcome&&n.outcome.dissents)||[];
  return ds.map(d=>(d.who?'<b>'+esc(d.who)+':</b> ':'')+esc(d.note)).join('<br>');
@@ -2485,14 +2571,8 @@ function renderAll(){
  const loaded=await persistLoad();
  DB=migrateDB(loaded||{engagements:[],activeId:null});
  S=DB.activeId?activeEng().data:null;
- // entry routing: #/<code> lands straight on that subpage (client experience);
- // no hash or #/hub lands on the Decision Hub (LI experience)
- const m=location.hash.match(/^#\/(.+)/);
- const entry=m?decodeURIComponent(m[1]):'hub';
- if(entry==='templates')hubTab='tpl';
- const target=!RESERVED_CODES.includes(entry)&&DB.engagements.find(x=>(x.data.meta.code||'')===entry);
- if(target){DB.activeId=target.id;S=target.data;currentView='map';}
- renderAll();
+ // entry routing: the hash (#/<code>/<view>/<id>) restores the exact place — engagement, scope, view, or open decision
+ applyRoute();
  setSaveMsg(loaded?('Edited '+fmtWhen(S&&S.meta?S.meta.updated:null)):'Sample engagement',false);
  if(!loaded)persistSave();
 })();
