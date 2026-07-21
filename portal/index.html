@@ -982,6 +982,10 @@ function logChange(n,desc){
  n.amended=true;
  S.changes.push({date:new Date().toISOString().slice(0,16).replace('T',' '),nodeId:n.id,nodeTitle:n.title,desc});
 }
+// governance-lifecycle events (consensus recorded, decision locked) — audit entries, NOT amendments
+function logEvent(n,desc){
+ S.changes.push({date:new Date().toISOString().slice(0,16).replace('T',' '),nodeId:n.id,nodeTitle:n.title,desc});
+}
 function guardLocked(n){
  if(n.status==='lo'){toast('Locked — reopen with a change request first.');return true;}
  return false;
@@ -2280,6 +2284,7 @@ function recordDecision(id){
  if(had){n.amended=true;
   S.changes.push({date:new Date().toISOString().slice(0,16).replace('T',' '),nodeId:n.id,nodeTitle:n.title,
    desc:optChanged?('Consensus changed to "'+optLabel(n,pick)+'"'):'Decision record updated'});}
+ else logEvent(n,'Consensus recorded: "'+optLabel(n,pick)+'"');  // first consensus — record it in the log
  markDirty();renderSession();
  toast(had?'Decision updated.':'Consensus recorded: '+optLabel(n,pick));
 }
@@ -2287,7 +2292,7 @@ function lockNode(id){
  const n=byId(id);
  const open=childrenOf(id).filter(k=>k.status!=='lo');
  if(open.length){toast('Lock its sub-decisions first — '+open.length+' still open.');return;}
- n.status='lo';markDirty();renderSession();
+ n.status='lo';logEvent(n,'Decision locked — Decided');markDirty();renderSession();
  toast('Locked.');}
 async function unproposeNode(id){
  const n=byId(id);
