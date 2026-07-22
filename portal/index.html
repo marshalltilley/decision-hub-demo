@@ -302,6 +302,13 @@ select{padding:8px 30px 8px 10px;border:1px solid rgba(94,104,111,.7);border-rad
 .opt.rec{border-color:rgba(255,192,0,.65)}
 .opt.rec::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--gold);border-radius:0}
 .opt.chosen{border-color:var(--navy)}
+.opt-row.multi .opt.chosen{background:rgba(34,51,66,.05)}
+.opt-row.multi .opt.pick{padding-right:36px}
+.opt-check{position:absolute;top:12px;right:12px;width:16px;height:16px;border:1.5px solid var(--gray-light);background:#fff}
+.opt-check.on{border-color:var(--navy);background:var(--navy)}
+.opt-check.on::after{content:"";position:absolute;left:4px;top:1px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.multi-hint{font-family:var(--disp);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);margin-top:14px}
+.multi-hint b{color:var(--navy)}
 .rec-tag,.chosen-tag{position:absolute;top:-9px;font-family:var(--disp);font-weight:600;font-size:10px;
   letter-spacing:.08em;padding:2px 7px;border-radius:0;text-transform:uppercase}
 .rec-tag{left:10px;background:var(--gold);color:var(--navy)}
@@ -690,6 +697,24 @@ function defaultState(){
    o('b','Anniversary + intra-term buckets','Flexibility marketing angle.','Hedge slippage cost','Admin complexity','Rare; little shelf credit')],
    'a','Intra-term flexibility costs real hedge money for a feature agents rarely sell on.','ns',null,['n5'])
  ];
+ // multi-select demonstration: a long option list where several indexes are chosen at once
+ const idxOpts=[
+  {id:'a',label:'S&P 500 (Annual Pt-to-Pt)',desc:'The shelf anchor every IMO expects.',facts:[{k:'Type',v:'Broad US equity'},{k:'Crediting',v:'Cap or par, annual'}]},
+  {id:'b',label:'S&P 500 Total Return (−1.5% fee)',desc:'Dividends in, explicit index fee; higher stated caps.',facts:[{k:'Type',v:'Broad US equity (TR)'}]},
+  {id:'c',label:'Nasdaq-100',desc:'Growth/tech tilt for upside-seekers.',facts:[{k:'Type',v:'US large-cap growth'}]},
+  {id:'d',label:'Russell 2000',desc:'Small-cap diversifier.',facts:[{k:'Type',v:'US small-cap'}]},
+  {id:'e',label:'MSCI EAFE',desc:'International developed exposure.',facts:[{k:'Type',v:'Intl developed equity'}]},
+  {id:'f',label:'S&P 500 Low Volatility',desc:'Defensive equity sleeve.',facts:[{k:'Type',v:'US equity, low-vol'}]},
+  {id:'g',label:'S&P MARC 5% ER',desc:'Multi-asset vol-control; illustrates strongly.',facts:[{k:'Type',v:'Vol-controlled multi-asset'}]},
+  {id:'h',label:'BlackRock Dynamic Allocation',desc:'Proprietary risk-controlled index.',facts:[{k:'Type',v:'Proprietary vol-control'}]},
+  {id:'i',label:'Franklin Quality Dividend',desc:'Dividend-quality proprietary index.',facts:[{k:'Type',v:'Proprietary equity'}]},
+  {id:'j',label:'1-Year Fixed Account',desc:'Declared-rate strategy; the safe sleeve.',facts:[{k:'Type',v:'Fixed declared rate'}]}
+ ];
+ const idxNode=nd('n20',2,'Index shelf — which indexes to offer','Which crediting indexes should the FIA make available? Multiple selections expected — this is the menu agents allocate across.',idxOpts,'',
+   'Offer a balanced menu — a broad benchmark, a growth index, an international sleeve, one vol-control strategy, and a fixed option — rather than crowding the illustration with look-alikes.',
+   'de',{optionIds:['a','c','e','g','j'],dissents:[{who:'C. Dist',note:'Wanted Russell 2000 for the small-cap story; deferred to a post-launch menu review.'}],rationale:'Balanced five: S&P 500 (anchor), Nasdaq-100 (growth), MSCI EAFE (international), S&P MARC 5% (vol-control), and the 1-year fixed account — covers the main IMO shopping patterns without an unwieldy illustration.',date:'2026-07-08'},[]);
+ idxNode.multi=true;idxNode.due='2026-07-22';
+ N.push(idxNode);
  ['n4','n5','n6','n7','n17'].forEach(id=>{const x=N.find(n=>n.id===id);if(x)x.agenda=true;});
  N.find(n=>n.id==='n1').ch=true;
  ['n13','n14'].forEach(id=>{N.find(n=>n.id===id).pn=true;});
@@ -1919,7 +1944,7 @@ function toggleSubs(id){
  currentView==='log'?renderLog():renderMap();
 }
 function nodeCardHtml(n,withScope,noSubs){
- const dec=n.outcome?optLabel(n,n.outcome.optionId):'';
+ const dec=n.outcome?chosenSummary(n,true):'';
  const tag=n.blocked?['Blocked','warn']:(n.agenda&&n.status==='ns'&&mapFilter!=='today')?['Today','today']:null;
  const kids=childrenOf(n.id);
  let subHtml='';
@@ -1967,6 +1992,14 @@ function tierGroupsHtml(vis,withScope){
  return html;
 }
 function optLabel(n,oid){const op=n.options.find(x=>x.id===oid);return op?op.label:'';}
+// chosen option(s): single decisions have outcome.optionId; multi-select have outcome.optionIds[]
+function chosenIds(n){if(!n||!n.outcome)return [];return n.multi?(n.outcome.optionIds||[]):(n.outcome.optionId?[n.outcome.optionId]:[]);}
+function chosenSummary(n,compact){
+ const ids=chosenIds(n);if(!ids.length)return '';
+ if(!n.multi)return optLabel(n,ids[0]);
+ const labels=ids.map(id=>optLabel(n,id)).filter(Boolean);
+ return compact?(labels.length+' of '+n.options.length+' selected'):labels.join(', ');
+}
 
 /* ---------- DETAIL (drill-down from map) ---------- */
 // Drop a card's staged-but-uncommitted edits (option pick / concerns / rationale).
@@ -2033,13 +2066,14 @@ function renderFacilitation(n){
    return dn?`<span class="dep-item"><span class="dep-sq ${dn.blocked?'bl':dn.status}" title="${esc(dn.blocked?'Blocked':STATUS_LABEL[dn.status])}"></span><button class="qlink" onclick="openNode('${dn.id}')">${esc(dn.title)}</button>${dn.outcome?' ('+esc(optLabel(dn,dn.outcome.optionId))+')':''}</span>`:''}).filter(Boolean).join(' · ');
 
  const editable=n.status!=='lo'&&viewRole!=='viewer';
- const picked=n._proposed||(n.outcome&&n.outcome.optionId)||null;
-
- const optHtml='<div class="opt-row">'+n.options.map(op=>{
-   const sel=picked===op.id;
-   const tag=sel?(n.status==='ns'&&n._proposed?'Consensus pick':'Selected'):'';
+ const pickedIds=n.multi?(Array.isArray(n._proposed)?n._proposed:chosenIds(n)):[n._proposed||(n.outcome&&n.outcome.optionId)].filter(Boolean);
+ const multiHint=(n.multi&&editable)?`<div class="multi-hint">Select all that apply — <b>${pickedIds.length}</b> of ${n.options.length} selected</div>`:'';
+ const optHtml=multiHint+`<div class="opt-row${n.multi?' multi':''}">`+n.options.map(op=>{
+   const sel=pickedIds.includes(op.id);
+   const tag=(sel&&!n.multi)?(n.status==='ns'&&n._proposed?'Consensus pick':'Selected'):'';
    return `<div class="opt ${n.liRec===op.id?'rec':''} ${sel?'chosen':''} ${editable?'pick':''}"
      ${editable?`onclick="selectOption('${n.id}','${op.id}')" role="button" tabindex="0"`:''}>
+     ${n.multi?`<span class="opt-check${sel?' on':''}" aria-hidden="true"></span>`:''}
      ${n.liRec===op.id?'<span class="rec-tag">LI recommends</span>':''}
      ${tag?`<span class="chosen-tag">${tag}</span>`:''}
      <div class="opt-t">${esc(op.label)}</div>
@@ -2053,7 +2087,7 @@ function renderFacilitation(n){
  const parentLine=parent?`<div class="dep-line">Sub-decision of <button class="qlink" style="font-size:12px" onclick="openNode('${parent.id}')">${esc(parent.title)}</button></div>`:'';
  const kids=childrenOf(n.id);
  const subsHtml=kids.length?`<div class="dis-h">Sub-decisions</div>`+kids.map(k=>
-  `<button class="sub-line-d" onclick="openNode('${k.id}')"><span class="sub-sq ${k.blocked?'bl':k.status}"></span><span class="sub-t">${esc(k.title)}</span>${k.outcome?`<span class="sub-dec">${esc(optLabel(k,k.outcome.optionId))}</span>`:''}<span class="sub-st">${k.blocked?'Blocked':STATUS_LABEL[k.status]}</span></button>`).join(''):'';
+  `<button class="sub-line-d" onclick="openNode('${k.id}')"><span class="sub-sq ${k.blocked?'bl':k.status}"></span><span class="sub-t">${esc(k.title)}</span>${k.outcome?`<span class="sub-dec">${esc(chosenSummary(k,true))}</span>`:''}<span class="sub-st">${k.blocked?'Blocked':STATUS_LABEL[k.status]}</span></button>`).join(''):'';
 
  let commHtml='';
  if(n.gov){
@@ -2097,7 +2131,7 @@ function renderFacilitation(n){
   const d=n.outcome;
   const dl=(d.dissents||[]).map(x=>(x.who?'<b>'+esc(x.who)+':</b> ':'')+esc(x.note)).join('<br>');
   outHtml=`<div class="outcome-box ${n.status==='lo'?'locked':''}">
-    <b>${n.status==='lo'?'DECIDED':'PROPOSED'}:</b> ${esc(optLabel(n,d.optionId))} · ${esc(d.date||'')}
+    <b>${n.status==='lo'?'DECIDED':'PROPOSED'}:</b> ${esc(chosenSummary(n))} · ${esc(d.date||'')}
     ${d.rationale?('<br><b>Rationale:</b> '+esc(d.rationale)):''}
     ${dl?('<br><b>Concerns:</b><br>'+dl):''}
   </div>`;
@@ -2223,7 +2257,12 @@ function selectOption(nid,oid){
  const n=byId(nid);
  if(n.status==='lo')return;
  stashRationale();
- n._proposed=(n._proposed===oid)?null:oid;
+ if(n.multi){
+  let cur=Array.isArray(n._proposed)?n._proposed.slice():chosenIds(n).slice();
+  n._proposed=cur.includes(oid)?cur.filter(x=>x!==oid):cur.concat(oid);  // toggle in/out of the set
+ }else{
+  n._proposed=(n._proposed===oid)?null:oid;
+ }
  markDirty();renderSession();
  restoreRationale(n);
 }
@@ -2260,15 +2299,18 @@ function restoreRationale(n){
 }
 function recordDecision(id){
  const n=byId(id);
- const pick=n._proposed||(n.outcome&&n.outcome.optionId);
- if(!pick){toast('Tap the consensus option first.');return;}
+ const multiPick=n.multi?(Array.isArray(n._proposed)?n._proposed:chosenIds(n)):null;
+ const pick=n.multi?multiPick:(n._proposed||(n.outcome&&n.outcome.optionId));
+ if(n.multi?!multiPick.length:!pick){toast(n.multi?'Select at least one option first.':'Tap the consensus option first.');return;}
  const ta=document.getElementById('ratTa');
  const rat=ta?ta.value.trim():'';
  const dissents=(n._dissents||[]).filter(d=>d.note.trim()).map(d=>({who:d.who,note:d.note.trim()}));
  const prev=n.outcome;
  const had=!!prev;
- // did anything real change? compare option, rationale, and concerns — not the date
- const optChanged=!had||prev.optionId!==pick;
+ // did anything real change? compare option(s), rationale, and concerns — not the date
+ const optChanged=!had||(n.multi
+   ?JSON.stringify((prev.optionIds||[]).slice().sort())!==JSON.stringify(multiPick.slice().sort())
+   :prev.optionId!==pick);
  const ratChanged=had&&(prev.rationale||'')!==rat;
  const disChanged=had&&JSON.stringify(prev.dissents||[])!==JSON.stringify(dissents);
  if(had&&!optChanged&&!ratChanged&&!disChanged){
@@ -2276,17 +2318,18 @@ function recordDecision(id){
   delete n._proposed;delete n._dissents;delete n._rat;
   renderSession();toast('No changes to record.');return;
  }
- n.outcome={optionId:pick,rationale:rat,dissents,date:had?prev.date:new Date().toISOString().slice(0,10)};
+ const date=had?prev.date:new Date().toISOString().slice(0,10);
+ n.outcome=n.multi?{optionIds:multiPick.slice(),rationale:rat,dissents,date}:{optionId:pick,rationale:rat,dissents,date};
  n.status='de';n.blocked=false;
- if((n.ch||n.pn)&&n.groupId){const g=grpById(n.groupId);if(g)g.name=optLabel(n,pick);}
+ if(!n.multi&&(n.ch||n.pn)&&n.groupId){const g=grpById(n.groupId);if(g)g.name=optLabel(n,pick);}
  paintMeta();
  delete n._proposed;delete n._dissents;delete n._rat;
  if(had){n.amended=true;
   S.changes.push({date:new Date().toISOString().slice(0,16).replace('T',' '),nodeId:n.id,nodeTitle:n.title,
-   desc:optChanged?('Consensus changed to "'+optLabel(n,pick)+'"'):'Decision record updated'});}
- else logEvent(n,'Consensus recorded: "'+optLabel(n,pick)+'"');  // first consensus — record it in the log
+   desc:optChanged?('Consensus changed to "'+chosenSummary(n)+'"'):'Decision record updated'});}
+ else logEvent(n,'Consensus recorded: "'+chosenSummary(n)+'"');  // first consensus — record it in the log
  markDirty();renderSession();
- toast(had?'Decision updated.':'Consensus recorded: '+optLabel(n,pick));
+ toast(had?'Decision updated.':'Consensus recorded: '+chosenSummary(n));
 }
 function lockNode(id){
  const n=byId(id);
@@ -2318,8 +2361,8 @@ async function reopenNode(id){
 }
 async function toggleBlock(id){
  const n=byId(id);
- if(n.blocked){n.blocked=false;n.blockNote='';}
- else{const note=await uiPrompt('What’s needed, and who owns it?',{title:'Flag blocker',placeholder:'Blocker note',okLabel:'Flag'});if(note===null)return;n.blocked=true;n.blockNote=note;}
+ if(n.blocked){n.blocked=false;n.blockNote='';logChange(n,'Blocker cleared');}
+ else{const note=await uiPrompt('What’s needed, and who owns it?',{title:'Flag blocker',placeholder:'Blocker note',okLabel:'Flag'});if(note===null)return;n.blocked=true;n.blockNote=note;logChange(n,'Blocker flagged: '+note);}
  markDirty();renderSession();
 }
 
@@ -2385,7 +2428,7 @@ function renderLog(){
   if(logGroup&&(n.groupId||'__root')!==logGroup)return false;
   if(!lq)return true;
   const d=n.outcome;
-  return [n.title,optLabel(n,d.optionId),d.rationale||'',(d.dissents||[]).map(x=>(x.who||'')+' '+x.note).join(' ')].join(' ').toLowerCase().indexOf(lq)>-1;
+  return [n.title,chosenSummary(n),d.rationale||'',(d.dissents||[]).map(x=>(x.who||'')+' '+x.note).join(' ')].join(' ').toLowerCase().indexOf(lq)>-1;
  });
  done=sortLog(done);
  let html=progressLine()+logControlsHtml(done.length);
@@ -2399,7 +2442,7 @@ function renderLog(){
   html+=`<div class="log-item ${n.status}">
     <div class="log-h"><span class="log-t">${esc(n.title)}</span>
       <span class="log-meta">${n.parentId?'Sub-decision · ':''}${esc(scopeLabelOf(n))} · ${esc(d.date||'')} · ${STATUS_LABEL[n.status]}${n.amended?' · <span style="color:var(--danger)">Amended</span>':''}</span></div>
-    <div class="log-dec">${esc(optLabel(n,d.optionId))}</div>
+    <div class="log-dec">${esc(chosenSummary(n))}</div>
     ${d.rationale?`<div class="log-r">${esc(d.rationale)}</div>`:''}
     ${dissentLines(n)?`<div class="log-c">${dissentLines(n)}</div>`:''}
     ${chgs.length?`<div class="note"><b>Amendments:</b> ${chgs.map(c=>esc(c.desc)+' ('+esc(c.date)+')').join('; ')}</div>`:''}
@@ -2510,7 +2553,7 @@ function exportJson(){
    title:n.title,
    scope:scopeLabelOf(n),
    status:STATUS_LABEL[n.status],
-   decision:optLabel(n,n.outcome.optionId),
+   decision:chosenSummary(n),
    date:n.outcome.date||'',
    rationale:n.outcome.rationale||'',
    concerns:(n.outcome.dissents||[]).map(x=>({who:x.who||'',note:x.note})),
